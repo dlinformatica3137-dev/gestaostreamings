@@ -145,8 +145,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(data.user);
     setLicense(data.license);
     const rem = calculateRemainingSeconds(data.license);
-    // Guarantees 24h (86400s) on brand new registration
-    setRemainingSeconds(rem > 0 ? rem : 86400);
+    // Guarantees 3 days (259200s = 72h) on brand new registration
+    setRemainingSeconds(rem > 0 ? rem : 259200);
   };
 
   const logout = () => {

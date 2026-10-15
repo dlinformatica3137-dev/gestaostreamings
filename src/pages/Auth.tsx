@@ -176,7 +176,7 @@ export const Auth: React.FC<AuthProps> = () => {
               <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
                 <Clock className="w-3.5 h-3.5" />
               </div>
-              <span><strong>24 horas de teste gratuito</strong> ativado no cadastro</span>
+              <span><strong>3 dias de teste gratuito</strong> ativado no cadastro</span>
             </div>
 
             <div className="flex items-center gap-2.5">
@@ -235,7 +235,7 @@ export const Auth: React.FC<AuthProps> = () => {
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Criar Conta (Teste 24h)
+              Criar Conta (Teste 3 Dias Grátis)
             </button>
           </div>
 
@@ -409,7 +409,7 @@ export const Auth: React.FC<AuthProps> = () => {
                 disabled={isLoading}
                 className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs sm:text-sm transition-all shadow-md disabled:opacity-50"
               >
-                {isLoading ? 'Ativando Teste...' : 'Criar Conta e Iniciar 24h Grátis'}
+                {isLoading ? 'Ativando Teste...' : 'Criar Conta e Iniciar 3 Dias Grátis'}
               </button>
             </form>
           )}

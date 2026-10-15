@@ -79,7 +79,7 @@ authRouter.post('/register', (req, res) => {
     const { password_hash, ...safeUser } = user;
 
     return res.status(201).json({
-      message: 'Conta criada com sucesso! Teste de 24 horas ativado.',
+      message: 'Conta criada com sucesso! Teste de 3 dias grátis ativado.',
       token,
       user: safeUser,
       license

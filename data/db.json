@@ -2749,7 +2749,7 @@
   "system_settings": {
     "super_admin_password_hash": "92637aaa6de4b5db9769165b328a984c9dbb09bf83ebf52f4fe4052db918768f",
     "lifetime_price": 199,
-    "trial_duration_hours": 24,
+    "trial_duration_hours": 72,
     "mp_access_token": "APP_USR-3342703594856922-092208-6c2e7033f1006fd418c37d40a9f1b789-478616081",
     "mp_webhook_secret": ""
   }

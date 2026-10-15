@@ -168,7 +168,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </span>
                 ) : (
                   <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-semibold text-[11px]">
-                    <Clock className="w-3.5 h-3.5" /> Teste 24h
+                    <Clock className="w-3.5 h-3.5" /> Teste 3 Dias
                   </span>
                 )}
               </div>

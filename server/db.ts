@@ -761,7 +761,7 @@ class Database {
       data.system_settings = {
         super_admin_password_hash: hashPassword('admin@saas2026'),
         lifetime_price: 199.00,
-        trial_duration_hours: 24,
+        trial_duration_hours: 72,
         mp_access_token: process.env.MERCADO_PAGO_ACCESS_TOKEN || '',
         mp_webhook_secret: process.env.MERCADO_PAGO_WEBHOOK_SECRET || ''
       };
@@ -1572,8 +1572,10 @@ class Database {
     const now = new Date();
     const trialStartedAt = now.toISOString();
 
-    // Per user specification: Each trial gets exactly 24 hours, expiring only after 24h
-    const trialDuration = 24 * 60 * 60 * 1000;
+    // Per user specification: Each trial gets 3 days (72 hours), expiring only after 72h
+    const settings = this.getSystemSettings();
+    const trialHours = Number(settings.trial_duration_hours) || 72;
+    const trialDuration = trialHours * 60 * 60 * 1000;
     const trialExpiresAt = new Date(now.getTime() + trialDuration).toISOString();
 
     const newTenant = {
@@ -2520,7 +2522,7 @@ class Database {
       this.data.system_settings = {
         super_admin_password_hash: hashPassword('admin@saas2026'),
         lifetime_price: 199.00,
-        trial_duration_hours: 24,
+        trial_duration_hours: 72,
         mp_access_token: process.env.MERCADO_PAGO_ACCESS_TOKEN || '',
         mp_webhook_secret: process.env.MERCADO_PAGO_WEBHOOK_SECRET || ''
       };

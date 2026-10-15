@@ -9,7 +9,7 @@ export function requireActiveLicense(req: AuthenticatedRequest, res: Response, n
   const license = db.getLicense(req.tenantId!);
   if (license.is_expired && license.type !== 'lifetime') {
     return res.status(403).json({
-      error: 'Seu período de teste de 24 horas encerrou. Adquira a licença vitalícia por R$ 199,00 para continuar gerenciando seus clientes e automações.',
+      error: 'Seu período de teste de 3 dias encerrou. Adquira a licença vitalícia por R$ 199,00 para continuar gerenciando seus clientes e automações.',
       is_license_expired: true
     });
   }

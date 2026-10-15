@@ -421,7 +421,7 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
                   </span>
                 ) : (
                   <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                    Período de Teste Gratuito (24 horas)
+                    Período de Teste Gratuito (3 dias)
                   </span>
                 )}
               </div>

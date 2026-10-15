@@ -21,7 +21,7 @@ export const TrialBanner: React.FC = () => {
           <div className="flex items-center gap-2.5 text-center sm:text-left">
             <AlertTriangle className="w-5 h-5 shrink-0 text-white animate-bounce" />
             <span>
-              <strong>Período de teste de 24 horas encerrado!</strong> As funcionalidades de alteração foram bloqueadas. Adquira sua licença vitalícia para continuar gerenciando seus clientes.
+              <strong>Período de teste de 3 dias encerrado!</strong> As funcionalidades de alteração foram bloqueadas. Adquira sua licença vitalícia para continuar gerenciando seus clientes.
             </span>
           </div>
           <button

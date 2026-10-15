@@ -23,7 +23,7 @@ export const tenants = pgTable('tenants', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
-// SaaS Licenses (24h Trial / Lifetime License)
+// SaaS Licenses (3 Days Trial / Lifetime License)
 export const licenses = pgTable('licenses', {
   id: text('id').primaryKey(),
   tenantId: text('tenant_id').notNull(),

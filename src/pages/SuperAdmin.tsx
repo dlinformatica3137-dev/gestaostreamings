@@ -144,7 +144,7 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
   const [newMasterPass, setNewMasterPass] = useState('');
   const [confirmMasterPass, setConfirmMasterPass] = useState('');
   const [settingLifetimePrice, setSettingLifetimePrice] = useState('199');
-  const [settingTrialHours, setSettingTrialHours] = useState('24');
+  const [settingTrialHours, setSettingTrialHours] = useState('72');
   const [settingMpAccessToken, setSettingMpAccessToken] = useState('');
   const [showMpToken, setShowMpToken] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
@@ -175,7 +175,7 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
       const data: OverviewData = await res.json();
       setOverview(data);
       setSettingLifetimePrice(String(data.settings.lifetime_price || 199));
-      setSettingTrialHours(String(data.settings.trial_duration_hours || 24));
+      setSettingTrialHours(String(data.settings.trial_duration_hours || 72));
       if (data.settings?.mp_access_token !== undefined) {
         setSettingMpAccessToken(data.settings.mp_access_token || '');
       }
@@ -746,7 +746,7 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Controle centralizado de quem está fazendo o teste gratuito (24h) e de quem está comprando a ativação vitalícia de R$ 199.
+                Controle centralizado de quem está fazendo o teste gratuito (3 dias) e de quem está comprando a ativação vitalícia de R$ 199.
               </p>
             </div>
           </div>
@@ -1050,7 +1050,7 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
                             ) : isActiveTrial ? (
                               <div className="space-y-0.5">
                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-300 dark:border-blue-700">
-                                  <Clock className="w-3.5 h-3.5" /> Teste 24h Ativo
+                                  <Clock className="w-3.5 h-3.5" /> Teste 3 Dias Ativo
                                 </span>
                                 <div className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 pl-1">
                                   ⏳ {formatCountdown(tenant.license.remaining_seconds, tenant.license.trial_expires_at)}
@@ -1526,7 +1526,7 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
                     className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="text-[10px] text-slate-400">
-                    Tempo que o novo cliente recebe ao criar uma conta gratuita (padrão: 24 horas).
+                    Tempo que o novo cliente recebe ao criar uma conta gratuita (padrão: 72 horas / 3 dias).
                   </span>
                 </div>
 
