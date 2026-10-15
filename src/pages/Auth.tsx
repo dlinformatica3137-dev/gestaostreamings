@@ -72,6 +72,33 @@ export const Auth: React.FC<AuthProps> = () => {
     setIsLoading(true);
     setErrorMessage(null);
 
+    // Validação estrita: Nome, E-mail, WhatsApp e Senha obrigatórios
+    if (!regFullName || !regFullName.trim()) {
+      setErrorMessage('O Nome Completo é obrigatório para criar o teste.');
+      setIsLoading(false);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regEmail || !emailRegex.test(regEmail.trim())) {
+      setErrorMessage('Informe um e-mail válido (ex: seuemail@dominio.com).');
+      setIsLoading(false);
+      return;
+    }
+
+    const cleanPhone = (regPhone || '').replace(/\D/g, '');
+    if (!cleanPhone || cleanPhone.length < 10) {
+      setErrorMessage('O Número de WhatsApp com DDD é obrigatório para criar o teste (mínimo 10 dígitos, ex: 11999998888).');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!regPassword || regPassword.length < 6) {
+      setErrorMessage('A Senha é obrigatória e deve ter no mínimo 6 caracteres.');
+      setIsLoading(false);
+      return;
+    }
+
     if (regPassword !== regConfirmPassword) {
       setErrorMessage('As senhas digitadas não coincidem.');
       setIsLoading(false);
@@ -89,10 +116,10 @@ export const Auth: React.FC<AuthProps> = () => {
       const fingerprint = `fp_${navigator.userAgent.replace(/\D/g, '').substring(0, 10)}`;
 
       await register({
-        full_name: regFullName,
-        company_name: regCompany,
-        email: regEmail,
-        phone: regPhone,
+        full_name: regFullName.trim(),
+        company_name: regCompany.trim() || regFullName.trim(),
+        email: regEmail.trim().toLowerCase(),
+        phone: cleanPhone,
         password: regPassword,
         confirm_password: regConfirmPassword,
         terms_accepted: regTerms,
@@ -315,57 +342,76 @@ export const Auth: React.FC<AuthProps> = () => {
           {/* Form Register */}
           {mode === 'register' && (
             <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
+              <div className="p-2.5 bg-blue-500/10 border border-blue-500/30 rounded-xl text-xs text-blue-200 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shrink-0"></span>
+                <span>Preencha os campos obrigatórios abaixo para ativar seu <strong>teste de 3 dias grátis</strong> instantaneamente.</span>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">Nome Completo *</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-200">Nome Completo</label>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Obrigatório *</span>
+                  </div>
                   <input
                     type="text"
                     required
                     value={regFullName}
                     onChange={(e) => setRegFullName(e.target.value)}
                     placeholder="Ex: João da Silva"
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl text-xs text-white"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">Nome da Empresa / Negócio *</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-medium text-slate-400">Nome da Empresa / Painel</label>
+                    <span className="text-[10px] text-slate-500">Opcional</span>
+                  </div>
                   <input
                     type="text"
-                    required
                     value={regCompany}
                     onChange={(e) => setRegCompany(e.target.value)}
-                    placeholder="Ex: TurboPlay IPTV"
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white"
+                    placeholder="Ex: Minha Empresa / Painel (opcional)"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 focus:border-blue-500 rounded-xl text-xs text-white"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">E-mail *</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-200">E-mail</label>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Obrigatório *</span>
+                  </div>
                   <input
                     type="email"
                     required
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
-                    placeholder="contato@empresa.com"
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white"
+                    placeholder="seuemail@exemplo.com"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl text-xs text-white"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">Telefone / WhatsApp *</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-200">WhatsApp (com DDD)</label>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Obrigatório *</span>
+                  </div>
                   <input
-                    type="text"
+                    type="tel"
                     required
                     value={regPhone}
                     onChange={(e) => setRegPhone(e.target.value)}
-                    placeholder="11999998888"
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white"
+                    placeholder="Ex: 11999998888"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl text-xs text-white"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">Senha *</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-200">Senha</label>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Obrigatório *</span>
+                  </div>
                   <input
                     type="password"
                     required
@@ -373,20 +419,23 @@ export const Auth: React.FC<AuthProps> = () => {
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
                     placeholder="Mínimo 6 caracteres"
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl text-xs text-white"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">Confirmar Senha *</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-200">Confirmar Senha</label>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Obrigatório *</span>
+                  </div>
                   <input
                     type="password"
                     required
                     minLength={6}
                     value={regConfirmPassword}
                     onChange={(e) => setRegConfirmPassword(e.target.value)}
-                    placeholder="Repita a senha"
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white"
+                    placeholder="Repita a mesma senha"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl text-xs text-white"
                   />
                 </div>
               </div>
@@ -400,7 +449,7 @@ export const Auth: React.FC<AuthProps> = () => {
                   className="mt-0.5 w-4 h-4 text-blue-600 rounded"
                 />
                 <span>
-                  Declaro que aceito os Termos de Uso e a Política de Privacidade do Gestor de Streamings SaaS.
+                  Declaro que aceito os Termos de Uso e a Política de Privacidade do Gestor de Streamings.
                 </span>
               </label>
 

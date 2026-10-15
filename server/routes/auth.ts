@@ -44,33 +44,55 @@ export function generateToken(user: any): string {
 authRouter.post('/register', (req, res) => {
   const { full_name, company_name, email, phone, password, confirm_password, terms_accepted, fingerprint } = req.body;
 
-  if (!full_name || !company_name || !email || !phone || !password) {
-    return res.status(400).json({ error: 'Preencha todos os campos obrigatórios.' });
+  // 1. Nome Obrigatório
+  if (!full_name || typeof full_name !== 'string' || !full_name.trim()) {
+    return res.status(400).json({ error: 'O Nome Completo é obrigatório para criar sua conta de teste.' });
   }
 
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'A senha deve ter no mínimo 6 caracteres.' });
+  // 2. E-mail Obrigatório
+  if (!email || typeof email !== 'string' || !email.trim()) {
+    return res.status(400).json({ error: 'O E-mail é obrigatório para criar sua conta de teste.' });
+  }
+  const cleanEmail = email.trim().toLowerCase();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(cleanEmail)) {
+    return res.status(400).json({ error: 'Informe um endereço de e-mail válido (ex: contato@email.com).' });
+  }
+
+  // 3. Número de WhatsApp Obrigatório
+  const cleanPhone = (phone ? String(phone) : '').replace(/\D/g, '');
+  if (!cleanPhone || cleanPhone.length < 10) {
+    return res.status(400).json({ error: 'O Número de WhatsApp é obrigatório com DDD (mínimo 10 dígitos, ex: 11999998888).' });
+  }
+
+  // 4. Senha Obrigatória
+  if (!password || typeof password !== 'string' || password.length < 6) {
+    return res.status(400).json({ error: 'A Senha é obrigatória e deve ter no mínimo 6 caracteres.' });
   }
 
   if (password !== confirm_password) {
-    return res.status(400).json({ error: 'As senhas não coincidem.' });
+    return res.status(400).json({ error: 'As senhas digitadas não coincidem.' });
   }
 
   if (!terms_accepted) {
     return res.status(400).json({ error: 'É necessário aceitar os termos de uso e política de privacidade.' });
   }
 
-  const existing = db.findUserByEmail(email);
+  const existing = db.findUserByEmail(cleanEmail);
   if (existing) {
     return res.status(400).json({ error: 'Este e-mail já está cadastrado no sistema.' });
   }
 
+  const effectiveCompany = (company_name && typeof company_name === 'string' && company_name.trim())
+    ? company_name.trim()
+    : full_name.trim();
+
   try {
     const { user, license } = db.createUser({
-      email,
-      full_name,
-      company_name,
-      phone,
+      email: cleanEmail,
+      full_name: full_name.trim(),
+      company_name: effectiveCompany,
+      phone: cleanPhone,
       password,
       fingerprint
     });
