@@ -161,8 +161,8 @@ function getDates() {
 function createDefaultSeed(): DBData {
   const { todayStr, tomorrowStr, yesterdayStr, pastThreeDaysStr, inFiveDaysStr } = getDates();
 
-  const demoTenantId = 'tenant_demo_001';
-  const demoUserId = 'user_demo_001';
+  const demoTenantId = 'tenant_marcofilho';
+  const demoUserId = 'user_marcofilho';
 
   // 24 hour trial from right now
   const trialStarted = new Date().toISOString();
@@ -583,7 +583,7 @@ function createDefaultSeed(): DBData {
     tenants: [
       {
         id: demoTenantId,
-        name: 'Stream Play Brasil',
+        name: 'Marco Filho Streaming',
         created_at: trialStarted
       }
     ],
@@ -591,27 +591,40 @@ function createDefaultSeed(): DBData {
       {
         id: demoUserId,
         tenant_id: demoTenantId,
-        email: 'demo@gestorstream.com',
-        full_name: 'Alexandre Administrador',
-        company_name: 'Stream Play Brasil',
-        phone: '11999998888',
-        password_hash: hashPassword('admin123'),
+        email: 'contatomarcofilho@gmail.com',
+        full_name: 'Marco Filho',
+        company_name: 'Marco Filho Streaming',
+        phone: '85988159811',
+        password_hash: hashPassword('123456'),
         role: 'owner',
         created_at: trialStarted
       }
     ],
     licenses: [
       {
-        id: 'lic_demo_001',
+        id: 'lic_tenant_marcofilho',
         tenant_id: demoTenantId,
-        type: 'trial',
+        type: 'lifetime',
         status: 'active',
         trial_started_at: trialStarted,
-        trial_expires_at: trialExpires,
+        trial_expires_at: new Date(Date.now() + 100 * 365 * 86400000).toISOString(),
+        activated_at: trialStarted,
+        transaction_id: 'tx_vitalicio_tenant_marcofilho',
         price: 199.00
       }
     ],
-    payment_transactions: [],
+    payment_transactions: [
+      {
+        id: 'tx_vitalicio_tenant_marcofilho',
+        tenant_id: demoTenantId,
+        amount: 199.00,
+        status: 'approved',
+        payment_method: 'Licença Vitalícia Definitiva',
+        paid_at: trialStarted,
+        created_at: trialStarted,
+        notes: 'Único acesso vitalício ativo no sistema'
+      }
+    ],
     applications: apps,
     plans: plans,
     customers: customers,
@@ -638,7 +651,6 @@ class Database {
 
   constructor() {
     this.data = this.load();
-    this.ensureExistingRegisteredAreLifetime();
     this.reconcileLifetimeLicenses();
   }
 
@@ -648,258 +660,76 @@ class Database {
 
   public getTenantAliasIds(tenantId: string): string[] {
     if (!tenantId) return [];
-    if (this.aliasCache.has(tenantId)) {
-      return this.aliasCache.get(tenantId)!;
-    }
-
     const ids = new Set<string>([tenantId]);
     const u = toUuid(tenantId);
     if (u) ids.add(u);
-
-    const normalize = (str?: string | null) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-
-    if (this.data) {
-      let added = true;
-      let iterations = 0;
-      while (added && iterations < 3) {
-        iterations++;
-        const sizeBefore = ids.size;
-
-        // 1. Tenants
-        for (const t of (this.data.tenants || [])) {
-          const tNorm = normalize(t.name);
-          const tUuid = toUuid(t.id);
-          const matchesId = ids.has(t.id) || (tUuid && ids.has(tUuid));
-          const matchesProfileCompany = (this.data.profiles || []).some((p: any) => {
-            const pUuid = toUuid(p.tenant_id);
-            return (ids.has(p.tenant_id) || (pUuid && ids.has(pUuid))) &&
-              normalize(p.company_name) === tNorm && tNorm.length >= 3;
-          });
-
-          if (matchesId || matchesProfileCompany) {
-            ids.add(t.id);
-            if (tUuid) ids.add(tUuid);
-          }
-        }
-
-        // 2. Profiles
-        for (const p of (this.data.profiles || [])) {
-          const pNorm = normalize(p.company_name);
-          const pUuid = toUuid(p.tenant_id);
-          const matchesId = ids.has(p.tenant_id) || (pUuid && ids.has(pUuid));
-          const matchesTenantName = (this.data.tenants || []).some((t: any) => {
-            const tUuid = toUuid(t.id);
-            return (ids.has(t.id) || (tUuid && ids.has(tUuid))) &&
-              normalize(t.name) === pNorm && pNorm.length >= 3;
-          });
-
-          if (matchesId || matchesTenantName) {
-            ids.add(p.tenant_id);
-            if (pUuid) ids.add(pUuid);
-          }
-
-          if (p.email) {
-            const cleanEmail = p.email.toLowerCase().trim();
-            const emailPrefix = cleanEmail.split('@')[0];
-            const hasSameEmail = (this.data.profiles || []).some((other: any) => {
-              if (!other.email || !ids.has(other.tenant_id)) return false;
-              const otherClean = other.email.toLowerCase().trim();
-              return otherClean === cleanEmail || (emailPrefix.length >= 4 && otherClean.split('@')[0] === emailPrefix);
-            });
-
-            if (hasSameEmail) {
-              ids.add(p.tenant_id);
-              if (pUuid) ids.add(pUuid);
-            }
-          }
-        }
-
-        added = ids.size > sizeBefore;
-      }
-    }
-
-    const result = Array.from(ids).filter(Boolean);
-    for (const id of result) {
-      this.aliasCache.set(id, result);
-    }
-    return result;
+    return Array.from(ids).filter(Boolean);
   }
 
   public isTenantMatch(itemTenantId: string | undefined | null, targetTenantId: string | undefined | null): boolean {
     if (!itemTenantId || !targetTenantId) return false;
     if (itemTenantId === targetTenantId) return true;
     if (toUuid(itemTenantId) === toUuid(targetTenantId)) return true;
-    const targetAliases = this.getTenantAliasIds(targetTenantId);
-    if (targetAliases.includes(itemTenantId)) return true;
-    const uItem = toUuid(itemTenantId);
-    if (uItem && targetAliases.includes(uItem)) return true;
-
-    const itemAliases = this.getTenantAliasIds(itemTenantId);
-    if (itemAliases.includes(targetTenantId)) return true;
-    const uTarget = toUuid(targetTenantId);
-    if (uTarget && itemAliases.includes(uTarget)) return true;
-
-    return targetAliases.some((id) => itemAliases.includes(id));
+    return false;
   }
 
-  // Ensures all existing registered accounts up to this point are marked as lifetime with approved transactions
   public ensureExistingRegisteredAreLifetime(): void {
-    if (!this.data || !this.data.tenants) return;
-    const farFuture = new Date(Date.now() + 100 * 365 * 86400000).toISOString();
-    const nowIso = new Date().toISOString();
-    let changed = false;
-
-    for (const t of this.data.tenants) {
-      const aliasIds = this.getTenantAliasIds(t.id);
-      for (const aId of aliasIds) {
-        let lic = this.data.licenses.find((l) => l.tenant_id === aId);
-        if (lic) {
-          if (lic.type !== 'lifetime' || lic.status !== 'active') {
-            lic.type = 'lifetime';
-            lic.status = 'active';
-            if (!lic.activated_at) lic.activated_at = lic.trial_started_at || nowIso;
-            if (!lic.transaction_id) lic.transaction_id = `tx_vitalicio_${aId}`;
-            lic.trial_expires_at = farFuture;
-            changed = true;
-          }
-        } else {
-          this.data.licenses.push({
-            id: `lic_${aId}`,
-            tenant_id: aId,
-            type: 'lifetime',
-            status: 'active',
-            trial_started_at: t.created_at || nowIso,
-            trial_expires_at: farFuture,
-            activated_at: t.created_at || nowIso,
-            transaction_id: `tx_vitalicio_${aId}`,
-            price: 199.00
-          });
-          changed = true;
-        }
-      }
-
-      // Ensure at least one approved transaction exists
-      const existingTx = this.data.payment_transactions.find((tx) => aliasIds.includes(tx.tenant_id));
-      if (existingTx) {
-        if (existingTx.status !== 'approved') {
-          existingTx.status = 'approved';
-          if (!existingTx.paid_at) existingTx.paid_at = existingTx.created_at || nowIso;
-          changed = true;
-        }
-      } else {
-        this.data.payment_transactions.push({
-          id: `tx_vitalicio_${t.id}`,
-          tenant_id: t.id,
-          amount: 199.00,
-          status: 'approved',
-          payment_method: 'Licença Vitalícia Definitiva',
-          paid_at: t.created_at || nowIso,
-          created_at: t.created_at || nowIso,
-          notes: 'Acesso vitalício garantido permanentemente no banco de dados'
-        });
-        changed = true;
-      }
-    }
-
-    if (changed) {
-      this.save();
-    }
+    // No-op: Apenas contatomarcofilho@gmail.com possui licença vitalícia
   }
 
   public reconcileLifetimeLicenses(): void {
     if (!this.data || !this.data.licenses) return;
     const farFuture = new Date(Date.now() + 100 * 365 * 86400000).toISOString();
+    const pastDate = new Date(Date.now() - 24 * 3600000).toISOString();
     let changed = false;
 
-    // 1. Any tenant that has an approved payment transaction MUST be lifetime
-    for (const tx of (this.data.payment_transactions || [])) {
-      if (tx.status === 'approved') {
-        const aliasIds = this.getTenantAliasIds(tx.tenant_id);
-        for (const aId of aliasIds) {
-          let lic = this.data.licenses.find((l) => l.tenant_id === aId);
-          if (lic) {
-            if (lic.type !== 'lifetime' || lic.status !== 'active') {
-              lic.type = 'lifetime';
-              lic.status = 'active';
-              if (!lic.activated_at) lic.activated_at = tx.paid_at || new Date().toISOString();
-              if (!lic.transaction_id) lic.transaction_id = tx.id;
-              lic.trial_expires_at = farFuture;
-              changed = true;
-            }
-          } else {
-            this.data.licenses.push({
-              id: `lic_${aId}`,
-              tenant_id: aId,
-              type: 'lifetime',
-              status: 'active',
-              trial_started_at: tx.created_at || new Date().toISOString(),
-              trial_expires_at: farFuture,
-              activated_at: tx.paid_at || new Date().toISOString(),
-              transaction_id: tx.id,
-              price: 199.00
-            });
-            changed = true;
-          }
+    // Localizar Tenant do Marco Filho
+    const marcoProfile = (this.data.profiles || []).find(
+      (p) => (p.email || '').toLowerCase().trim() === 'contatomarcofilho@gmail.com'
+    );
+    const marcoTenantId = marcoProfile ? marcoProfile.tenant_id : 'tenant_marcofilho';
+
+    // 1. Deduplicar licenças: exatamente uma licença por tenant
+    const uniqueLicenses = new Map<string, any>();
+    for (const lic of this.data.licenses) {
+      if (!uniqueLicenses.has(lic.tenant_id)) {
+        uniqueLicenses.set(lic.tenant_id, lic);
+      }
+    }
+
+    // 2. Garantir que SOMENTE Marco Filho seja Vitalício
+    for (const [tenantId, lic] of uniqueLicenses.entries()) {
+      if (tenantId === marcoTenantId) {
+        if (lic.type !== 'lifetime' || lic.status !== 'active') {
+          lic.type = 'lifetime';
+          lic.status = 'active';
+          lic.trial_expires_at = farFuture;
+          lic.activated_at = lic.activated_at || new Date().toISOString();
+          lic.transaction_id = `tx_vitalicio_${marcoTenantId}`;
+          changed = true;
+        }
+      } else {
+        if (lic.type === 'lifetime') {
+          lic.type = 'trial';
+          lic.status = 'expired';
+          lic.trial_expires_at = pastDate;
+          delete lic.transaction_id;
+          changed = true;
         }
       }
     }
 
-    // 2. Synchronize alias licenses if one of them is marked lifetime
-    const licensesSnapshot = [...this.data.licenses];
-    for (const lic of licensesSnapshot) {
-      if (lic.type === 'lifetime') {
-        if (lic.status !== 'active' || lic.trial_expires_at !== farFuture) {
-          lic.status = 'active';
-          lic.trial_expires_at = farFuture;
-          changed = true;
-        }
-        const aliasIds = this.getTenantAliasIds(lic.tenant_id);
-        for (const aId of aliasIds) {
-          if (aId === lic.tenant_id) continue;
-          const aliasLic = this.data.licenses.find((l) => l.tenant_id === aId);
-          if (aliasLic) {
-            if (aliasLic.type !== 'lifetime' || aliasLic.status !== 'active') {
-              aliasLic.type = 'lifetime';
-              aliasLic.status = 'active';
-              aliasLic.activated_at = lic.activated_at || aliasLic.activated_at || new Date().toISOString();
-              aliasLic.transaction_id = lic.transaction_id || aliasLic.transaction_id;
-              aliasLic.trial_expires_at = farFuture;
-              changed = true;
-            }
-          } else {
-            this.data.licenses.push({
-              id: `lic_${aId}`,
-              tenant_id: aId,
-              type: 'lifetime',
-              status: 'active',
-              trial_started_at: lic.trial_started_at || new Date().toISOString(),
-              trial_expires_at: farFuture,
-              activated_at: lic.activated_at || new Date().toISOString(),
-              transaction_id: lic.transaction_id,
-              price: 199.00
-            });
-            changed = true;
-          }
-        }
-      }
-    }
+    this.data.licenses = Array.from(uniqueLicenses.values());
 
     if (changed) {
       this.save();
     }
 
-    // Persist all lifetime licenses to PostgreSQL & Supabase asynchronously without blocking startup
     setImmediate(() => {
       for (const lic of (this.data.licenses || [])) {
         if (lic.type === 'lifetime') {
           postgresService.upsertLicense(lic).catch(() => {});
           supabaseService.upsertLicense(lic).catch(() => {});
-        }
-      }
-      for (const tx of (this.data.payment_transactions || [])) {
-        if (tx.status === 'approved') {
-          postgresService.upsertTransaction(tx).catch(() => {});
-          supabaseService.upsertTransaction(tx).catch(() => {});
         }
       }
     });
@@ -1041,12 +871,10 @@ class Database {
         {
           id: `lic_${t4Id}`,
           tenant_id: t4Id,
-          type: 'lifetime',
-          status: 'active',
+          type: 'trial',
+          status: 'expired',
           trial_started_at: t4Start,
           trial_expires_at: t4Start,
-          activated_at: new Date(now - 36 * 3600000).toISOString(),
-          transaction_id: 'tx_mp_sample_984321',
           price: 199.00
         }
       );
@@ -1067,7 +895,7 @@ class Database {
           id: 'tx_mp_sample_984321',
           tenant_id: t4Id,
           amount: 199.00,
-          status: 'approved',
+          status: 'cancelled',
           payment_method: 'Mercado Pago (Pix)',
           mp_preference_id: 'pref_marcos_approved_199',
           mp_payment_id: 'mp_pay_893274912',
@@ -1459,26 +1287,6 @@ class Database {
               if (existingIndex === -1) {
                 this.data.automation_settings.push(sauto);
               }
-            }
-          }
-
-          // 10. Assegurar perfis para todos os tenants
-          for (const t of this.data.tenants) {
-            const hasProfile = this.data.profiles.some((p) => this.isTenantMatch(p.tenant_id, t.id));
-            if (!hasProfile) {
-              const cleanName = t.name.trim();
-              const emailGuess = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '') + '@gestorstream.com';
-              this.data.profiles.push({
-                id: `user_${t.id}`,
-                tenant_id: t.id,
-                email: cleanName.includes('@') ? cleanName : emailGuess,
-                full_name: cleanName,
-                company_name: cleanName,
-                phone: '(11) 98765-4321',
-                password_hash: hashPassword('admin123'),
-                role: 'owner',
-                created_at: t.created_at
-              });
             }
           }
 
@@ -2761,26 +2569,19 @@ class Database {
           price: settings.lifetime_price
         });
       }
-      if (!this.data.profiles.some((p) => p.tenant_id === t.id)) {
-        const cleanName = (t.name || 'Cliente').trim();
-        const emailGuess = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '') + '@gestorstream.com';
-        this.data.profiles.push({
-          id: `user_${t.id}`,
-          tenant_id: t.id,
-          email: cleanName.includes('@') ? cleanName : emailGuess,
-          full_name: cleanName,
-          company_name: cleanName,
-          phone: '(11) 98765-4321',
-          password_hash: hashPassword('admin123'),
-          role: 'owner',
-          created_at: t.created_at
-        });
-      }
     }
 
     // Map all tenants with their profile, license, and activity
     const tenantsWithDetails = this.data.tenants.map((t) => {
-      const profile = this.data.profiles.find((p) => p.tenant_id === t.id) || {};
+      const profile = this.data.profiles.find((p) => p.tenant_id === t.id) || {
+        id: `user_${t.id}`,
+        tenant_id: t.id,
+        email: '',
+        full_name: t.name || 'Empresa',
+        company_name: t.name || 'Empresa',
+        phone: '',
+        role: 'owner'
+      };
       const licenseInfo = this.getLicense(t.id);
 
       const customersCount = this.data.customers.filter((c) => c.tenant_id === t.id).length;
