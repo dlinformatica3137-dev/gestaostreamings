@@ -20,7 +20,9 @@ import {
   Minimize2,
   LogOut,
   Key,
-  TvMinimalPlay
+  TvMinimalPlay,
+  Youtube,
+  PlayCircle
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -130,6 +132,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </button>
             );
           })}
+
+          {/* Vídeo Aula Tutorial Button */}
+          <div className="pt-2 mt-2 border-t border-slate-100 dark:border-slate-800/80">
+            <a
+              href="https://youtu.be/lMqaxdLJoE4"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all text-red-600 dark:text-red-400 bg-red-50/70 hover:bg-red-100/90 dark:bg-red-950/30 dark:hover:bg-red-950/60 border border-red-200/70 dark:border-red-900/50 shadow-2xs group cursor-pointer ${
+                isCollapsed ? 'justify-center px-0' : ''
+              }`}
+              title="Assistir Vídeo Aula"
+            >
+              <Youtube className="w-5 h-5 shrink-0 text-red-600 dark:text-red-500 group-hover:scale-110 transition-transform" />
+              {!isCollapsed && <span className="truncate">Vídeo Aula</span>}
+              {!isCollapsed && (
+                <span className="ml-auto flex items-center gap-1 text-[10px] font-black px-1.5 py-0.5 rounded-md bg-red-600 text-white shadow-2xs uppercase tracking-wider">
+                  <PlayCircle className="w-3 h-3" /> Assistir
+                </span>
+              )}
+            </a>
+          </div>
         </nav>
 
         {/* License & System Action Controls in Sidebar */}
