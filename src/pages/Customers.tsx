@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { api } from '../services/api.ts';
-import { Customer, StreamingApp, CommercialPlan, Charge, WhatsAppLog } from '../types/index.ts';
+import { useAuth } from '../context/AuthContext.tsx';
+import { Customer, StreamingApp, CommercialPlan, Charge, WhatsAppLog, WhatsAppAutomationSettings } from '../types/index.ts';
+import { DEFAULT_STANDARD_ONE_DAY_BEFORE, DEFAULT_STANDARD_DUE_DATE, DEFAULT_STANDARD_AFTER_DUE_DATE } from './WhatsAppAutomation.tsx';
 import { ConfirmModal } from '../components/common/ConfirmModal.tsx';
 import {
   Users,
@@ -74,34 +76,120 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
     }, 3500);
   };
 
+  const { user } = useAuth();
+  const [waSettings, setWaSettings] = useState<WhatsAppAutomationSettings | null>(null);
+
+  const formatCurrency = (val: number) => `R$ ${Number(val || 0).toFixed(2).replace('.', ',')}`;
+  const formatDateBR = (dateStr: string) => {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    return new Date(dateStr).toLocaleDateString('pt-BR');
+  };
+
   // Direct WhatsApp Send Modal (sem links externos!)
   const [directMsgCustomer, setDirectMsgCustomer] = useState<Customer | null>(null);
   const [directMsgType, setDirectMsgType] = useState<string>('due_date');
   const [directMsgCustomText, setDirectMsgCustomText] = useState<string>('');
   const [isSendingDirectMsg, setIsSendingDirectMsg] = useState<boolean>(false);
 
-  const getDirectMessageText = (c: Customer, type: string, custom: string) => {
-    if (type === 'custom') return custom;
+  const computeTemplateMessage = (
+    c: Customer,
+    type: string,
+    currentSettings?: WhatsAppAutomationSettings | null
+  ) => {
+    const activeSettings = currentSettings !== undefined ? currentSettings : waSettings;
     const h = new Date().getHours();
     const greeting = h >= 5 && h < 12 ? 'Bom dia' : h >= 12 && h < 18 ? 'Boa tarde' : 'Boa noite';
-    const clientName = c.full_name;
+    const clientName = c.full_name || 'Cliente';
     const planName = c.plan_name || 'Plano de Assinatura';
     const priceStr = formatCurrency(c.monthly_fee);
     const dueDateStr = formatDateBR(c.due_date);
+    const company = user?.company_name || 'Gestor de Streamings';
 
-    if (type === 'due_date') {
-      return `${greeting}, ${clientName}! Passando para avisar que hoje é o dia de vencimento da sua assinatura do ${planName}, no valor de ${priceStr}. Para renovar sem corte de sinal, favor enviar o comprovante Pix. Obrigado!`;
-    }
+    const formatWithVars = (tmpl: string) => {
+      let msg = tmpl
+        .replace(/\{nome_cliente\}/g, clientName)
+        .replace(/\{cliente\}/g, clientName)
+        .replace(/\{nome_plano\}/g, planName)
+        .replace(/\{plano\}/g, planName)
+        .replace(/\{valor\}/g, priceStr)
+        .replace(/\{data_vencimento\}/g, dueDateStr)
+        .replace(/\{vencimento\}/g, dueDateStr)
+        .replace(/\{nome_empresa\}/g, company)
+        .replace(/\{empresa\}/g, company);
+      if (msg.startsWith('Bom dia') || msg.startsWith('Boa tarde') || msg.startsWith('Boa noite')) {
+        msg = msg.replace(/^(Bom dia|Boa tarde|Boa noite)/, greeting);
+      }
+      return msg;
+    };
+
     if (type === 'one_day_before') {
-      return `${greeting}, ${clientName}! Lembrando com antecedência que amanhã vence seu plano ${planName} (${priceStr}). Qualquer dúvida, estamos por aqui!`;
+      const raw = activeSettings?.template_one_day_before || DEFAULT_STANDARD_ONE_DAY_BEFORE;
+      return formatWithVars(raw);
+    }
+    if (type === 'due_date') {
+      const raw = activeSettings?.template_due_date || DEFAULT_STANDARD_DUE_DATE;
+      return formatWithVars(raw);
     }
     if (type === 'after_due_date') {
-      return `Olá, ${clientName}! Constatamos que o seu plano ${planName} venceu em ${dueDateStr}. Caso deseje reativar seu acesso, realize o pagamento de ${priceStr} e nos envie o comprovante.`;
+      const raw = activeSettings?.template_after_due_date || DEFAULT_STANDARD_AFTER_DUE_DATE;
+      return formatWithVars(raw);
     }
     if (type === 'credentials') {
-      return `${greeting}, ${clientName}! Seguem seus dados de acesso:\n\n👤 Usuário: ${c.stream_username || 'cliente'}\n🔒 Senha: ${c.stream_password || '********'}\n🌐 Servidor: http://play.streamings.tv:8080\n\nQualquer dúvida, conte com nosso suporte!`;
+      const u = c.stream_username || c.app_username || 'usuario_cliente';
+      const p = c.stream_password || c.app_password || '********';
+      const serverUrl = 'http://play.streamings.tv:8080';
+      return `${greeting}, ${clientName}! Aqui estão os seus dados oficiais de acesso ao ${planName}:\n\n👤 Usuário: ${u}\n🔒 Senha: ${p}\n🌐 Servidor/URL: ${serverUrl}\n\nBom entretenimento! Se precisar de suporte, responda a esta mensagem.`;
     }
-    return custom;
+    return '';
+  };
+
+  const handleOpenDirectMsgModal = async (c: Customer) => {
+    setDirectMsgCustomer(c);
+    const todayStr = new Date().toISOString().split('T')[0];
+    let initialType = 'due_date';
+    if (c.due_date && c.due_date < todayStr) {
+      initialType = 'after_due_date';
+    } else if (c.due_date && c.due_date === todayStr) {
+      initialType = 'due_date';
+    } else {
+      initialType = 'one_day_before';
+    }
+    setDirectMsgType(initialType);
+
+    let latestSettings = waSettings;
+    try {
+      const fresh = await api.getWhatsAppSettings();
+      if (fresh) {
+        setWaSettings(fresh);
+        latestSettings = fresh;
+      }
+    } catch {
+      // keep current
+    }
+
+    const text = computeTemplateMessage(c, initialType, latestSettings);
+    setDirectMsgCustomText(text);
+  };
+
+  const handleSelectDirectMsgType = (type: string) => {
+    setDirectMsgType(type);
+    if (!directMsgCustomer) return;
+    if (type === 'custom') {
+      if (!directMsgCustomText) {
+        setDirectMsgCustomText(`Olá, ${directMsgCustomer.full_name}! `);
+      }
+    } else {
+      const text = computeTemplateMessage(directMsgCustomer, type, waSettings);
+      setDirectMsgCustomText(text);
+    }
+  };
+
+  const handleResetToTemplate = (type: string) => {
+    if (!directMsgCustomer) return;
+    const text = computeTemplateMessage(directMsgCustomer, type, waSettings);
+    setDirectMsgCustomText(text);
   };
 
   const handleSendDirectMsg = async () => {
@@ -111,7 +199,7 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
       showToast('Cliente não possui telefone cadastrado.', 'error');
       return;
     }
-    const message = getDirectMessageText(directMsgCustomer, directMsgType, directMsgCustomText);
+    const message = directMsgCustomText;
     if (!message || !message.trim()) {
       showToast('Mensagem não pode ficar em branco.', 'error');
       return;
@@ -163,14 +251,16 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const [custList, appList, planList] = await Promise.all([
+      const [custList, appList, planList, waSet] = await Promise.all([
         api.getCustomers(),
         api.getApplications(),
-        api.getPlans()
+        api.getPlans(),
+        api.getWhatsAppSettings().catch(() => null)
       ]);
       setCustomers(custList);
       setApps(appList);
       setPlans(planList);
+      if (waSet) setWaSettings(waSet);
 
       if (initialAction === 'new' && appList.length > 0) {
         handleOpenCreateModal(appList, planList);
@@ -381,13 +471,6 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
     });
   }, [customers, searchTerm, selectedApp, selectedStatus]);
 
-  const formatCurrency = (val: number) => `R$ ${Number(val || 0).toFixed(2).replace('.', ',')}`;
-  const formatDateBR = (dateStr: string) => {
-    if (!dateStr) return '';
-    const parts = dateStr.split('-');
-    if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    return new Date(dateStr).toLocaleDateString('pt-BR');
-  };
 
   return (
     <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto">
@@ -609,7 +692,7 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                       <td className="py-3 px-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => setDirectMsgCustomer(c)}
+                            onClick={() => handleOpenDirectMsgModal(c)}
                             title="Disparar WhatsApp direto da Instância"
                             className="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 rounded-lg transition-colors cursor-pointer"
                           >
@@ -1182,7 +1265,7 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
               </button>
 
               <button
-                onClick={() => setDirectMsgCustomer(selectedCustomerDetail)}
+                onClick={() => handleOpenDirectMsgModal(selectedCustomerDetail)}
                 className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4" />
@@ -1547,13 +1630,25 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
 
             {/* Template Selector */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
-                Escolha o Modelo de Mensagem:
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
+                  Escolha o Modelo de Mensagem:
+                </label>
+                {directMsgType !== 'custom' && (
+                  <button
+                    type="button"
+                    onClick={() => handleResetToTemplate(directMsgType)}
+                    className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                    title="Restaurar texto original deste modelo"
+                  >
+                    <RotateCw className="w-3 h-3" /> Restaurar Modelo
+                  </button>
+                )}
+              </div>
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
-                  onClick={() => setDirectMsgType('due_date')}
+                  onClick={() => handleSelectDirectMsgType('due_date')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     directMsgType === 'due_date'
                       ? 'bg-emerald-600 text-white shadow-xs'
@@ -1564,7 +1659,7 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                 </button>
                 <button
                   type="button"
-                  onClick={() => setDirectMsgType('one_day_before')}
+                  onClick={() => handleSelectDirectMsgType('one_day_before')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     directMsgType === 'one_day_before'
                       ? 'bg-blue-600 text-white shadow-xs'
@@ -1575,7 +1670,7 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                 </button>
                 <button
                   type="button"
-                  onClick={() => setDirectMsgType('after_due_date')}
+                  onClick={() => handleSelectDirectMsgType('after_due_date')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     directMsgType === 'after_due_date'
                       ? 'bg-rose-600 text-white shadow-xs'
@@ -1586,7 +1681,7 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                 </button>
                 <button
                   type="button"
-                  onClick={() => setDirectMsgType('credentials')}
+                  onClick={() => handleSelectDirectMsgType('credentials')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     directMsgType === 'credentials'
                       ? 'bg-purple-600 text-white shadow-xs'
@@ -1597,7 +1692,7 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                 </button>
                 <button
                   type="button"
-                  onClick={() => setDirectMsgType('custom')}
+                  onClick={() => handleSelectDirectMsgType('custom')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     directMsgType === 'custom'
                       ? 'bg-amber-600 text-white shadow-xs'
@@ -1609,30 +1704,26 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
               </div>
             </div>
 
-            {/* Message Preview or Textarea */}
-            {directMsgType === 'custom' ? (
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
-                  Digite sua mensagem personalizada:
-                </label>
-                <textarea
-                  rows={4}
-                  value={directMsgCustomText}
-                  onChange={(e) => setDirectMsgCustomText(e.target.value)}
-                  placeholder="Escreva a mensagem aqui..."
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white"
-                />
-              </div>
-            ) : (
-              <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
-                  Pré-visualização do texto formatado:
-                </span>
-                <p className="text-xs text-slate-800 dark:text-slate-200 whitespace-pre-wrap leading-relaxed">
-                  {getDirectMessageText(directMsgCustomer, directMsgType, directMsgCustomText)}
-                </p>
-              </div>
-            )}
+            {/* Message Textarea */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
+                {directMsgType === 'custom'
+                  ? 'Digite sua mensagem personalizada:'
+                  : 'Mensagem formatada (puxada exatamente do modelo de mensagem):'}
+              </label>
+              <textarea
+                rows={8}
+                value={directMsgCustomText}
+                onChange={(e) => setDirectMsgCustomText(e.target.value)}
+                placeholder="Escreva a mensagem aqui..."
+                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white leading-relaxed focus:ring-2 focus:ring-emerald-500 outline-none font-sans"
+              />
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
+                {directMsgType === 'custom'
+                  ? '💡 Mensagem livre personalizada para este cliente.'
+                  : '💡 Esta mensagem utiliza o modelo exato configurado na Automação WhatsApp com os dados deste cliente e Pix preenchidos. Você pode editá-la antes de disparar.'}
+              </span>
+            </div>
 
             {/* Action buttons */}
             <div className="flex items-center gap-3 pt-2">
