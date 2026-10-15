@@ -89,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   Gestor de Streamings
                 </span>
                 <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium tracking-wide">
-                  SaaS de Streaming & IPTV
+                  Streaming & IPTV
                 </span>
               </div>
             )}

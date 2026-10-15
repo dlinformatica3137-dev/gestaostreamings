@@ -174,7 +174,7 @@
       "type": "trial",
       "status": "expired",
       "trial_started_at": "2026-10-12T14:54:31.129Z",
-      "trial_expires_at": "2026-10-14T20:12:15.665Z",
+      "trial_expires_at": "2026-10-14T20:35:32.838Z",
       "price": 199,
       "activated_at": "2026-10-15T18:41:48.702Z"
     },
@@ -193,7 +193,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T20:25:05.080Z",
+      "trial_expires_at": "2126-09-21T20:28:18.511Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "transaction_id": "tx_vitalicio_tenant_marcofilho",
       "price": 199
@@ -210,20 +210,20 @@
     {
       "id": "lic_6d98f40b-5452-d460-1755-46d28b0920ba",
       "tenant_id": "6d98f40b-5452-d460-1755-46d28b0920ba",
-      "type": "lifetime",
-      "status": "active",
+      "type": "trial",
+      "status": "expired",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T20:25:05.080Z",
+      "trial_expires_at": "2026-10-14T20:35:32.838Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
     {
       "id": "lic_0fd66ada-3f1f-dfea-aa7c-6b6febe78b27",
       "tenant_id": "0fd66ada-3f1f-dfea-aa7c-6b6febe78b27",
-      "type": "lifetime",
-      "status": "active",
+      "type": "trial",
+      "status": "expired",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T20:25:05.080Z",
+      "trial_expires_at": "2026-10-14T20:35:32.838Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
@@ -233,7 +233,7 @@
       "type": "trial",
       "status": "expired",
       "trial_started_at": "2026-10-15T18:41:48.702Z",
-      "trial_expires_at": "2026-10-14T20:12:15.665Z",
+      "trial_expires_at": "2026-10-14T20:35:32.838Z",
       "activated_at": "2026-10-15T18:41:48.702Z",
       "price": 199
     }
@@ -2750,7 +2750,7 @@
     "super_admin_password_hash": "92637aaa6de4b5db9769165b328a984c9dbb09bf83ebf52f4fe4052db918768f",
     "lifetime_price": 199,
     "trial_duration_hours": 24,
-    "mp_access_token": "",
+    "mp_access_token": "APP_USR-3342703594856922-092208-6c2e7033f1006fd418c37d40a9f1b789-478616081",
     "mp_webhook_secret": ""
   }
 }
