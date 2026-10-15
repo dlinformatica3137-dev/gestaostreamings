@@ -663,6 +663,10 @@ class Database {
     const ids = new Set<string>([tenantId]);
     const u = toUuid(tenantId);
     if (u) ids.add(u);
+    if (tenantId === 'tenant_marcofilho' || tenantId === '0fd66ada-3f1f-dfea-aa7c-6b6febe78b27') {
+      ids.add('tenant_marcofilho');
+      ids.add('0fd66ada-3f1f-dfea-aa7c-6b6febe78b27');
+    }
     return Array.from(ids).filter(Boolean);
   }
 
@@ -670,6 +674,10 @@ class Database {
     if (!itemTenantId || !targetTenantId) return false;
     if (itemTenantId === targetTenantId) return true;
     if (toUuid(itemTenantId) === toUuid(targetTenantId)) return true;
+    const marcoAliases = ['tenant_marcofilho', '0fd66ada-3f1f-dfea-aa7c-6b6febe78b27'];
+    if (marcoAliases.includes(itemTenantId) && marcoAliases.includes(targetTenantId)) {
+      return true;
+    }
     return false;
   }
 
