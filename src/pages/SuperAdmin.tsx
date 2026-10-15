@@ -703,28 +703,6 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
               )}
             </button>
           </form>
-
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 text-center space-y-2">
-            <div className="text-[11px] text-slate-400 dark:text-slate-500">
-              💡 Senha mestre padrão do sistema: <code className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded font-bold font-mono">admin@saas2026</code>
-            </div>
-            <p className="text-[10px] text-slate-400">
-              Você pode alterar a senha mestre a qualquer momento dentro das configurações do painel.
-            </p>
-
-            {onExit && (
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={onExit}
-                  className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Voltar para o Sistema SaaS / Login de Clientes</span>
-                </button>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     );
