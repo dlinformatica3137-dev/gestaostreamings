@@ -595,7 +595,7 @@ function createDefaultSeed(): DBData {
         full_name: 'Marco Filho',
         company_name: 'Marco Filho Streaming',
         phone: '85988159811',
-        password_hash: hashPassword('123456'),
+        password_hash: hashPassword('marco@2026'),
         role: 'owner',
         created_at: trialStarted
       }
