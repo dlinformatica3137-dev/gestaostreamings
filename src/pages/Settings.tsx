@@ -19,6 +19,8 @@ import {
   CheckCircle,
   Copy,
   Lock,
+  Eye,
+  EyeOff,
   Loader2
 } from 'lucide-react';
 
@@ -43,6 +45,9 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState<boolean>(false);
   const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
 
   // Webhook copy
@@ -84,6 +89,38 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
     try {
       await api.changePassword({
         current_password: currentPassword,
+        new_password: newPassword,
+        confirm_new_password: confirmNewPassword
+      });
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+      showToast('Senha alterada com sucesso!');
+    } catch (err: any) {
+      showToast(err.message || 'Erro ao alterar senha.', 'error');
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  const handleDirectReset = async () => {
+    if (!newPassword || newPassword.length < 6) {
+      showToast('Digite uma nova senha com no mínimo 6 caracteres primeiro.', 'error');
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      showToast('As novas senhas não coincidem.', 'error');
+      return;
+    }
+    if (!user?.email) {
+      showToast('E-mail da conta não identificado.', 'error');
+      return;
+    }
+
+    setIsChangingPassword(true);
+    try {
+      await api.recoverPassword({
+        email: user.email,
         new_password: newPassword,
         confirm_new_password: confirmNewPassword
       });
@@ -279,58 +316,110 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
 
           {/* Alteração de Senha */}
           <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Key className="w-4 h-4 text-amber-500" />
-              <span>Segurança & Senha</span>
-            </h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Key className="w-4 h-4 text-amber-500" />
+                <span>Segurança & Senha</span>
+              </h3>
+              <span className="text-[11px] text-slate-400">Você pode trocar sua senha sempre que quiser</span>
+            </div>
 
-            <form onSubmit={handleChangePassword} className="space-y-3">
+            <form onSubmit={handleChangePassword} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  Senha Atual *
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
-                />
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Senha Atual
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleDirectReset}
+                    disabled={isChangingPassword}
+                    className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                    title="Se não souber a senha atual, defina a nova senha abaixo e clique aqui"
+                  >
+                    Esqueceu a senha atual? Redefinir diretamente
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type={showCurrentPassword ? 'text' : 'password'}
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="Digite sua senha atual (ou use a opção direta)"
+                    className="w-full pl-3 pr-10 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    className="p-1 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  >
+                    {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-1">
                 <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                   Nova Senha *
                 </label>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
-                />
+                <div className="relative">
+                  <input
+                    type={showNewPassword ? 'text' : 'password'}
+                    required
+                    minLength={6}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Mínimo 6 dígitos"
+                    className="w-full pl-3 pr-10 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="p-1 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  >
+                    {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-1">
                 <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                   Confirmar Nova Senha *
                 </label>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
-                />
+                <div className="relative">
+                  <input
+                    type={showConfirmNewPassword ? 'text' : 'password'}
+                    required
+                    minLength={6}
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    placeholder="Repita a nova senha"
+                    className="w-full pl-3 pr-10 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                    className="p-1 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  >
+                    {showConfirmNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
-              <div className="pt-2 flex justify-end">
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={handleDirectReset}
+                  disabled={isChangingPassword}
+                  className="w-full sm:w-auto px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all border border-slate-200 dark:border-slate-700"
+                >
+                  {isChangingPassword ? 'Processando...' : 'Salvar sem Senha Antiga'}
+                </button>
+
                 <button
                   type="submit"
                   disabled={isChangingPassword}
-                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition-all shadow-xs"
+                  className="w-full sm:w-auto px-5 py-2 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-all shadow-xs"
                 >
                   {isChangingPassword ? 'Alterando...' : 'Atualizar Senha'}
                 </button>

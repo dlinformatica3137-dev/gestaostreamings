@@ -133,24 +133,38 @@ authRouter.get('/me', authMiddleware, (req: AuthenticatedRequest, res) => {
 
 // POST /api/auth/recover-password
 authRouter.post('/recover-password', (req, res) => {
-  const { email } = req.body;
+  const { email, new_password, confirm_new_password } = req.body;
   if (!email) {
     return res.status(400).json({ error: 'Informe seu e-mail cadastrado.' });
   }
 
-  const user = db.findUserByEmail(email);
+  const cleanEmail = String(email).toLowerCase().trim();
+  const user = db.findUserByEmail(cleanEmail);
   if (!user) {
-    // Avoid email enumeration while confirming the request
-    return res.json({ message: 'Se o e-mail estiver cadastrado, as instruções de recuperação foram enviadas.' });
+    return res.status(404).json({ error: 'Nenhum cadastro localizado com este e-mail.' });
   }
 
-  // Generate temporary password
+  if (new_password) {
+    if (new_password.length < 6) {
+      return res.status(400).json({ error: 'A nova senha deve ter no mínimo 6 caracteres.' });
+    }
+    if (confirm_new_password && new_password !== confirm_new_password) {
+      return res.status(400).json({ error: 'As confirmações de senha não coincidem.' });
+    }
+    db.changePassword(user.id, new_password);
+    return res.json({
+      success: true,
+      message: 'Senha alterada com sucesso! Você já pode entrar com sua nova senha.'
+    });
+  }
+
+  // Generate temporary password as fallback
   const tempPass = Math.random().toString(36).substring(2, 8) + 'A1!';
   db.changePassword(user.id, tempPass);
 
   return res.json({
-    message: 'Instruções enviadas com sucesso!',
-    temp_password_info: `Para fins de homologação do sistema: Nova senha temporária gerada: ${tempPass}`
+    message: 'Senha redefinida com sucesso!',
+    temp_password_info: `Nova senha gerada: ${tempPass}`
   });
 });
 

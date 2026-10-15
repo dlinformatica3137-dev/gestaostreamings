@@ -19,6 +19,7 @@ import {
   Maximize2,
   Minimize2,
   LogOut,
+  Key,
   TvMinimalPlay
 } from 'lucide-react';
 
@@ -258,6 +259,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                 </div>
               )}
+
+              {/* Change Password shortcut button */}
+              <button
+                onClick={() => onTabChange('settings')}
+                title="Trocar Minha Senha"
+                className={`p-2 text-slate-500 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 rounded-xl transition-colors ${
+                  isCollapsed ? '' : 'shrink-0'
+                }`}
+              >
+                <Key className="w-4 h-4" />
+              </button>
 
               {/* Logout button */}
               <button

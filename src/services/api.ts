@@ -59,13 +59,16 @@ export const api = {
     return data;
   },
 
-  async recoverPassword(email: string) {
+  async recoverPassword(payload: string | { email: string; new_password?: string; confirm_new_password?: string }) {
+    const body = typeof payload === 'string' ? { email: payload } : payload;
     const res = await fetch(`${API_BASE}/auth/recover-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+      body: JSON.stringify(body)
     });
-    return await res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erro ao alterar/redefinir senha.');
+    return data;
   },
 
   // License & Mercado Pago

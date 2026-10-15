@@ -1733,8 +1733,13 @@ class Database {
     if (!profile) return false;
     profile.password_hash = hashPassword(newPassword);
     this.save();
+    try {
+      postgresService.upsertUser(profile).catch(() => {});
+      supabaseService.upsertProfile(profile).catch(() => {});
+    } catch (e) {}
     return true;
   }
+
 
   // License & SaaS Management
   public getLicense(tenantId: string) {

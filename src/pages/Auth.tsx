@@ -16,6 +16,7 @@ import {
   Eye,
   EyeOff,
   HelpCircle,
+  Key,
   X
 } from 'lucide-react';
 
@@ -30,10 +31,16 @@ export const Auth: React.FC<AuthProps> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Recovery modal
+  // Recovery / Password Change modal
   const [isRecoveryOpen, setIsRecoveryOpen] = useState<boolean>(false);
   const [recoveryEmail, setRecoveryEmail] = useState<string>('');
+  const [recoveryNewPassword, setRecoveryNewPassword] = useState<string>('');
+  const [recoveryConfirmPassword, setRecoveryConfirmPassword] = useState<string>('');
+  const [showRecoveryNewPass, setShowRecoveryNewPass] = useState<boolean>(false);
+  const [showRecoveryConfirmPass, setShowRecoveryConfirmPass] = useState<boolean>(false);
+  const [recoveryLoading, setRecoveryLoading] = useState<boolean>(false);
   const [recoveryMessage, setRecoveryMessage] = useState<string | null>(null);
+  const [recoverySuccess, setRecoverySuccess] = useState<boolean>(false);
 
   // Form states
   const [loginEmail, setLoginEmail] = useState<string>('');
@@ -100,11 +107,38 @@ export const Auth: React.FC<AuthProps> = () => {
 
   const handleRecoverPassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    setRecoveryMessage(null);
+    setRecoverySuccess(false);
+
+    if (recoveryNewPassword) {
+      if (recoveryNewPassword.length < 6) {
+        setRecoveryMessage('A nova senha deve ter no mínimo 6 caracteres.');
+        return;
+      }
+      if (recoveryNewPassword !== recoveryConfirmPassword) {
+        setRecoveryMessage('As confirmações de senha não coincidem.');
+        return;
+      }
+    }
+
+    setRecoveryLoading(true);
     try {
-      const res = await api.recoverPassword(recoveryEmail);
-      setRecoveryMessage(res.temp_password_info || res.message);
+      const res = await api.recoverPassword({
+        email: recoveryEmail,
+        new_password: recoveryNewPassword || undefined,
+        confirm_new_password: recoveryConfirmPassword || undefined
+      });
+      setRecoverySuccess(true);
+      setRecoveryMessage(res.message || 'Senha alterada com sucesso! Você já pode entrar.');
+      setLoginEmail(recoveryEmail.trim().toLowerCase());
+      if (recoveryNewPassword) {
+        setLoginPassword(recoveryNewPassword);
+      }
     } catch (err: any) {
-      setRecoveryMessage(err.message || 'Erro ao processar recuperação.');
+      setRecoverySuccess(false);
+      setRecoveryMessage(err.message || 'Erro ao processar alteração de senha.');
+    } finally {
+      setRecoveryLoading(false);
     }
   };
 
@@ -236,10 +270,16 @@ export const Auth: React.FC<AuthProps> = () => {
                   <label className="text-xs font-medium text-slate-300">Senha</label>
                   <button
                     type="button"
-                    onClick={() => setIsRecoveryOpen(true)}
-                    className="text-xs text-blue-400 hover:underline"
+                    onClick={() => {
+                      setIsRecoveryOpen(true);
+                      setRecoveryMessage(null);
+                      setRecoverySuccess(false);
+                      if (loginEmail) setRecoveryEmail(loginEmail);
+                    }}
+                    className="text-xs text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1 font-medium"
                   >
-                    Esqueceu a senha?
+                    <Key className="w-3 h-3 text-amber-400" />
+                    <span>Esqueceu ou quer trocar a senha?</span>
                   </button>
                 </div>
                 <div className="relative">
@@ -376,47 +416,156 @@ export const Auth: React.FC<AuthProps> = () => {
         </div>
       </div>
 
-      {/* Password Recovery Modal */}
+      {/* Password Recovery & Change Modal */}
       {isRecoveryOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-xs overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-xs overflow-y-auto">
           <div className="relative w-full max-w-md bg-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-700 space-y-4 max-h-[92vh] overflow-y-auto my-auto shadow-2xl">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-white">Recuperar Senha</h3>
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                  <Key className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Trocar ou Redefinir Senha</h3>
+                  <p className="text-[11px] text-slate-400">Defina uma nova senha para sua conta a qualquer momento</p>
+                </div>
+              </div>
               <button
-                onClick={() => { setIsRecoveryOpen(false); setRecoveryMessage(null); }}
-                className="p-1 text-slate-400 hover:text-white"
+                onClick={() => {
+                  setIsRecoveryOpen(false);
+                  setRecoveryMessage(null);
+                  setRecoverySuccess(false);
+                  setRecoveryNewPassword('');
+                  setRecoveryConfirmPassword('');
+                }}
+                className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-400">
-              Digite seu e-mail cadastrado para gerar uma chave temporária de redefinição.
-            </p>
-
-            <form onSubmit={handleRecoverPassword} className="space-y-3">
-              <input
-                type="email"
-                required
-                value={recoveryEmail}
-                onChange={(e) => setRecoveryEmail(e.target.value)}
-                placeholder="seu@email.com"
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white"
-              />
-
-              {recoveryMessage && (
-                <div className="p-3 bg-blue-950/80 border border-blue-700 text-blue-200 rounded-xl text-xs">
-                  {recoveryMessage}
+            {recoverySuccess ? (
+              <div className="space-y-4 py-2">
+                <div className="p-4 bg-emerald-950/60 border border-emerald-600/60 rounded-xl text-center space-y-2">
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                    <CheckCircle className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-sm font-bold text-emerald-300">Senha Alterada com Sucesso!</h4>
+                  <p className="text-xs text-emerald-200/90 leading-relaxed">
+                    Sua nova senha foi salva. Os dados de login já foram preenchidos automaticamente na tela principal.
+                  </p>
                 </div>
-              )}
 
-              <button
-                type="submit"
-                className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs"
-              >
-                Enviar Instruções
-              </button>
-            </form>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsRecoveryOpen(false);
+                    setRecoveryMessage(null);
+                    setRecoverySuccess(false);
+                    setRecoveryNewPassword('');
+                    setRecoveryConfirmPassword('');
+                  }}
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2"
+                >
+                  <span>Entrar Agora no Sistema</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleRecoverPassword} className="space-y-3.5">
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                    <Mail className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Seu E-mail Cadastrado *</span>
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={recoveryEmail}
+                    onChange={(e) => setRecoveryEmail(e.target.value)}
+                    placeholder="ex: seu@email.com"
+                    className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                    <Lock className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Nova Senha Desejada *</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showRecoveryNewPass ? 'text' : 'password'}
+                      required
+                      minLength={6}
+                      value={recoveryNewPassword}
+                      onChange={(e) => setRecoveryNewPassword(e.target.value)}
+                      placeholder="Mínimo de 6 dígitos"
+                      className="w-full pl-3 pr-10 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowRecoveryNewPass(!showRecoveryNewPass)}
+                      className="p-1 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                    >
+                      {showRecoveryNewPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                    <Lock className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Confirmar Nova Senha *</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showRecoveryConfirmPass ? 'text' : 'password'}
+                      required
+                      minLength={6}
+                      value={recoveryConfirmPassword}
+                      onChange={(e) => setRecoveryConfirmPassword(e.target.value)}
+                      placeholder="Repita a nova senha"
+                      className="w-full pl-3 pr-10 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowRecoveryConfirmPass(!showRecoveryConfirmPass)}
+                      className="p-1 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                    >
+                      {showRecoveryConfirmPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                {recoveryMessage && !recoverySuccess && (
+                  <div className="p-3 bg-rose-950/70 border border-rose-700/80 text-rose-200 rounded-xl text-xs flex items-center gap-2">
+                    <span className="shrink-0">⚠️</span>
+                    <span>{recoveryMessage}</span>
+                  </div>
+                )}
+
+                <div className="pt-2 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsRecoveryOpen(false);
+                      setRecoveryMessage(null);
+                    }}
+                    className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={recoveryLoading}
+                    className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-all shadow-md disabled:opacity-50"
+                  >
+                    {recoveryLoading ? 'Salvando...' : 'Salvar Nova Senha'}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}
