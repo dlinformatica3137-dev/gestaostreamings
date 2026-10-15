@@ -17,8 +17,8 @@ planRouter.post('/', authMiddleware, requireActiveLicense, async (req: Authentic
   const tenantId = req.tenantId!;
   const { name, description, app_id, category, price, billing_cycle, duration_days } = req.body;
 
-  if (!name || !app_id || price === undefined) {
-    return res.status(400).json({ error: 'Preencha os campos obrigatórios do plano.' });
+  if (!name || price === undefined) {
+    return res.status(400).json({ error: 'Preencha o nome e o valor do plano.' });
   }
 
   try {
@@ -27,7 +27,7 @@ planRouter.post('/', authMiddleware, requireActiveLicense, async (req: Authentic
       tenant_id: tenantId,
       name,
       description: description || '',
-      app_id,
+      app_id: app_id || '',
       category: category || 'streaming',
       price: Number(price) || 0,
       billing_cycle: billing_cycle || 'mensal',

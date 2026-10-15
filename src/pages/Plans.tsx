@@ -88,7 +88,7 @@ export const Plans: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.app_id) {
+    if (!formData.name) {
       alert('Preencha os campos obrigatórios.');
       return;
     }
@@ -154,7 +154,7 @@ export const Plans: React.FC = () => {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Pesquisar plano ou aplicativo..."
+          placeholder="Pesquisar plano..."
           className="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       </div>
@@ -169,7 +169,7 @@ export const Plans: React.FC = () => {
             <div>
               <div className="flex items-start justify-between gap-2">
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/70 px-2.5 py-0.5 rounded-full">
-                  {plan.app_name || 'Geral'}
+                  {plan.app_name && plan.app_name !== 'Geral' ? plan.app_name : (plan.category || 'Streaming')}
                 </span>
 
                 <div className="flex items-center gap-1">
@@ -245,36 +245,18 @@ export const Plans: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    Aplicativo Relacionado *
-                  </label>
-                  <select
-                    required
-                    value={formData.app_id}
-                    onChange={(e) => setFormData({ ...formData, app_id: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
-                  >
-                    {apps.map((a) => (
-                      <option key={a.id} value={a.id}>{a.name}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    Valor (R$) *
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    required
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-mono text-slate-900 dark:text-white"
-                  />
-                </div>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Valor (R$) *
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  required
+                  value={formData.price}
+                  onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-mono text-slate-900 dark:text-white"
+                />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

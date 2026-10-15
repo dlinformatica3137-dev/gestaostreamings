@@ -78,7 +78,7 @@ export interface CommercialPlan {
   tenant_id: string;
   name: string;
   description: string;
-  app_id: string;
+  app_id?: string;
   app_name?: string;
   category: string;
   price: number;
