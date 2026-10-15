@@ -955,16 +955,44 @@ export const WhatsAppAutomation: React.FC<WhatsAppAutomationProps> = ({ initialD
             </label>
 
             {/* Horário e Fuso */}
-            <div className="space-y-1">
-              <span className="font-bold text-slate-900 dark:text-white block">Horário de Disparo</span>
-              <div className="flex items-center gap-2">
+            <div className="space-y-1.5">
+              <span className="font-bold text-slate-900 dark:text-white block text-xs">Horário de Disparo Automático</span>
+              <div className="flex flex-wrap items-center gap-2">
                 <input
                   type="time"
-                  value={settings.scheduled_time}
+                  value={settings.scheduled_time || '09:00'}
                   onChange={(e) => setSettings({ ...settings, scheduled_time: e.target.value })}
-                  className="px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
+                  className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500"
                 />
-                <span className="text-[11px] text-slate-500">Horário de Brasília</span>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      setIsSavingSettings(true);
+                      const updated = await api.updateWhatsAppSettings(settings);
+                      if (updated) setSettings(updated);
+                      setSettingsFeedback({
+                        message: `Horário de disparo salvo com sucesso para às ${settings.scheduled_time}!`,
+                        type: 'success'
+                      });
+                      setTimeout(() => setSettingsFeedback(null), 4000);
+                    } catch (err: any) {
+                      setSettingsFeedback({
+                        message: err.message || 'Erro ao salvar horário.',
+                        type: 'error'
+                      });
+                    } finally {
+                      setIsSavingSettings(false);
+                    }
+                  }}
+                  disabled={isSavingSettings}
+                  className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  title="Salvar este horário de disparo agora"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Salvar Horário</span>
+                </button>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">Horário Oficial de Brasília</span>
               </div>
             </div>
           </div>
@@ -1034,6 +1062,29 @@ export const WhatsAppAutomation: React.FC<WhatsAppAutomationProps> = ({ initialD
                 className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-mono leading-relaxed"
               />
             </div>
+          </div>
+          {/* Action buttons at bottom */}
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Todas as regras de disparo, horário ({settings.scheduled_time || '09:00'}) e textos dos modelos serão salvos.
+            </p>
+            <button
+              type="submit"
+              disabled={isSavingSettings}
+              className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            >
+              {isSavingSettings ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Salvando Alterações...</span>
+                </>
+              ) : (
+                <>
+                  <Check className="w-4 h-4" />
+                  <span>Salvar Alterações de Automação</span>
+                </>
+              )}
+            </button>
           </div>
         </form>
       )}

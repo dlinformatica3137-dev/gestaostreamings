@@ -348,6 +348,7 @@ export const api = {
       headers: getAuthHeader()
     });
     const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erro ao carregar configurações de WhatsApp.');
     return data.settings;
   },
 
@@ -358,6 +359,7 @@ export const api = {
       body: JSON.stringify(payload)
     });
     const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erro ao salvar configurações de WhatsApp.');
     return data.settings;
   },
 

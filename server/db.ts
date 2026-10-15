@@ -1473,6 +1473,67 @@ class Database {
           }
         }
 
+        if (loaded.whatsappAutomations && loaded.whatsappAutomations.length > 0) {
+          for (const wa of loaded.whatsappAutomations) {
+            const existing = this.data.automation_settings.find((s) => s.id === wa.id || this.isTenantMatch(s.tenant_id, wa.tenantId));
+            if (existing) {
+              existing.is_active = Boolean(wa.isActive);
+              existing.send_one_day_before = Boolean(wa.sendOneDayBefore);
+              existing.send_on_due_date = Boolean(wa.sendOnDueDate);
+              existing.send_after_due_date = Boolean(wa.sendAfterDueDate);
+              existing.scheduled_time = wa.scheduledTime || existing.scheduled_time || '09:00';
+              existing.timezone = wa.timezone || existing.timezone || 'America/Sao_Paulo';
+              existing.message_interval_seconds = Number(wa.messageIntervalSeconds) || existing.message_interval_seconds || 15;
+              existing.rate_limit_per_hour = Number(wa.rateLimitPerHour) || existing.rate_limit_per_hour || 120;
+              if (wa.templateOneDayBefore) existing.template_one_day_before = wa.templateOneDayBefore;
+              if (wa.templateDueDate) existing.template_due_date = wa.templateDueDate;
+              if (wa.templateAfterDueDate) existing.template_after_due_date = wa.templateAfterDueDate;
+            } else {
+              this.data.automation_settings.push({
+                id: wa.id,
+                tenant_id: wa.tenantId,
+                is_active: Boolean(wa.isActive),
+                send_one_day_before: Boolean(wa.sendOneDayBefore),
+                send_on_due_date: Boolean(wa.sendOnDueDate),
+                send_after_due_date: Boolean(wa.sendAfterDueDate),
+                scheduled_time: wa.scheduledTime || '09:00',
+                timezone: wa.timezone || 'America/Sao_Paulo',
+                message_interval_seconds: Number(wa.messageIntervalSeconds) || 15,
+                rate_limit_per_hour: Number(wa.rateLimitPerHour) || 120,
+                instance_id: wa.instanceId || null,
+                template_one_day_before: wa.templateOneDayBefore || DEFAULT_TEMPLATE_ONE_DAY_BEFORE,
+                template_due_date: wa.templateDueDate || DEFAULT_TEMPLATE_DUE_DATE,
+                template_after_due_date: wa.templateAfterDueDate || DEFAULT_TEMPLATE_AFTER_DUE_DATE
+              });
+            }
+          }
+        }
+
+        if (loaded.whatsappInstances && loaded.whatsappInstances.length > 0) {
+          for (const wi of loaded.whatsappInstances) {
+            const existing = this.data.whatsapp_instances.find((w) => w.id === wi.id || this.isTenantMatch(w.tenant_id, wi.tenantId));
+            if (existing) {
+              existing.name = wi.name || existing.name;
+              existing.provider = wi.provider || existing.provider;
+              existing.status = wi.status || existing.status;
+              existing.phone_number = wi.phoneNumber || existing.phone_number;
+              existing.last_connected_at = wi.lastConnectedAt ? new Date(wi.lastConnectedAt).toISOString() : existing.last_connected_at;
+              existing.error_message = wi.errorMessage || existing.error_message;
+            } else {
+              this.data.whatsapp_instances.push({
+                id: wi.id,
+                tenant_id: wi.tenantId,
+                name: wi.name || 'Instância Principal WhatsApp',
+                provider: wi.provider || 'evolution',
+                status: wi.status || 'disconnected',
+                phone_number: wi.phoneNumber || null,
+                last_connected_at: wi.lastConnectedAt ? new Date(wi.lastConnectedAt).toISOString() : null,
+                error_message: wi.errorMessage || null
+              });
+            }
+          }
+        }
+
         // Reconcile all lifetime licenses with approved transactions
         this.reconcileLifetimeLicenses();
         this.save();
@@ -2497,6 +2558,13 @@ class Database {
   public updateWhatsAppSettings(tenantId: string, patch: any) {
     const settings = this.getWhatsAppSettings(tenantId);
     Object.assign(settings, patch);
+
+    // Synchronize any matching duplicate entries and deduplicate
+    const keepId = settings.id;
+    this.data.automation_settings = this.data.automation_settings.filter(
+      (s) => !this.isTenantMatch(s.tenant_id, tenantId) || s.id === keepId
+    );
+
     this.save();
     supabaseService.upsertWhatsAppAutomation(settings).catch((e) => console.warn('Supabase update auto notice:', e?.message));
     postgresService.upsertWhatsAppAutomation(settings).catch((e) => console.warn('Postgres update auto notice:', e?.message));

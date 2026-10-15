@@ -193,7 +193,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T20:28:18.511Z",
+      "trial_expires_at": "2126-09-21T21:42:28.532Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "transaction_id": "tx_vitalicio_tenant_marcofilho",
       "price": 199
@@ -213,7 +213,7 @@
       "type": "trial",
       "status": "expired",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2026-10-14T20:35:32.838Z",
+      "trial_expires_at": "2026-10-14T21:49:02.751Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
@@ -223,7 +223,7 @@
       "type": "trial",
       "status": "expired",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2026-10-14T20:35:32.838Z",
+      "trial_expires_at": "2026-10-14T21:49:02.751Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
@@ -2594,7 +2594,7 @@
       "send_one_day_before": true,
       "send_on_due_date": true,
       "send_after_due_date": true,
-      "scheduled_time": "09:00",
+      "scheduled_time": "14:30",
       "timezone": "America/Sao_Paulo",
       "message_interval_seconds": 15,
       "rate_limit_per_hour": 120,
@@ -2605,21 +2605,6 @@
     {
       "id": "auto_1792085284699",
       "tenant_id": "tenant_1791979324661",
-      "is_active": true,
-      "send_one_day_before": true,
-      "send_on_due_date": true,
-      "send_after_due_date": true,
-      "scheduled_time": "09:00",
-      "timezone": "America/Sao_Paulo",
-      "message_interval_seconds": 15,
-      "rate_limit_per_hour": 120,
-      "template_one_day_before": "Olá! * {nome_cliente}!*\nPassando só pra lembrar que seu pacote \n*{nome_plano}*  Vence Amanhã.\n\n📆 Vencimento:  *({data_vencimento})*\n💰 Valor:  *{valor}*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n",
-      "template_due_date": "Olá! * {nome_cliente}!*\nHoje é se vencimento do  seu pacote \n*{nome_plano}* .\n\n📆 Vencimento:  *({data_vencimento})*\n💰 Valor:  *{valor}*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n",
-      "template_after_due_date": "Olá! * {nome_cliente}!*\nO vencimento do  seu pacote \n*{nome_plano}* .  Venceu ontem. Vai renovar?\n\n📆 Vencimento:  *({data_vencimento})*\n💰 Valor:  *{valor}*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n"
-    },
-    {
-      "id": "auto_1791975650492",
-      "tenant_id": "tenant_marcofilho",
       "is_active": true,
       "send_one_day_before": true,
       "send_on_due_date": true,

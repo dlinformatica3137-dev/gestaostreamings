@@ -3,6 +3,7 @@ import { db } from '../db.ts';
 import { authMiddleware, AuthenticatedRequest } from './auth.ts';
 import { requireActiveLicense } from './customers.ts';
 import { supabaseService } from '../supabaseService.ts';
+import { postgresService } from '../postgresService.ts';
 import { getGreeting, formatMessage, processTenantAutomation } from '../whatsappScheduler.ts';
 import { evolutionManager, generateEvolutionInstanceName } from '../evolutionManager.ts';
 import { baileysManager } from '../baileysManager.ts';
@@ -398,6 +399,7 @@ whatsappRouter.put('/settings', authMiddleware, requireActiveLicense, (req: Auth
   const tenantId = req.tenantId!;
   const updated = db.updateWhatsAppSettings(tenantId, req.body);
   supabaseService.upsertWhatsAppAutomation(updated).catch(console.warn);
+  postgresService.upsertWhatsAppAutomation(updated).catch(console.warn);
   return res.json({ settings: updated, message: 'Configurações de automação salvas com sucesso.' });
 });
 
