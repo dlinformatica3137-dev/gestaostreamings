@@ -11,7 +11,7 @@ export class SupabaseService {
 
   private init() {
     const url = (process.env.SUPABASE_URL || '').trim();
-    const secretKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+    const secretKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '').trim();
 
     if (url && secretKey) {
       try {
@@ -22,7 +22,8 @@ export class SupabaseService {
           }
         });
         this.isConfigured = true;
-        console.log('⚡ Supabase Service inicializado com sucesso (Service Role Ativo)');
+        const keyType = process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Service Role Ativo' : 'Anon Key Ativa';
+        console.log(`⚡ Supabase Service inicializado com sucesso (${keyType})`);
       } catch (err: any) {
         console.warn('⚠️ Erro ao inicializar cliente Supabase:', err?.message);
       }

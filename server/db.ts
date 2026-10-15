@@ -1084,6 +1084,7 @@ class Database {
   private saveTimeout: NodeJS.Timeout | null = null;
 
   public save(dataToSave?: DBData): void {
+    this.aliasCache.clear();
     if (dataToSave) {
       this.data = dataToSave;
     }
@@ -1105,6 +1106,7 @@ class Database {
   }
 
   public saveSync(dataToSave?: DBData): void {
+    this.aliasCache.clear();
     try {
       const data = dataToSave || this.data;
       if (!data) return;
