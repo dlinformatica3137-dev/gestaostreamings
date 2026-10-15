@@ -2666,7 +2666,8 @@ class Database {
       settings: {
         lifetime_price: settings.lifetime_price,
         trial_duration_hours: settings.trial_duration_hours,
-        has_mp_token: Boolean(settings.mp_access_token)
+        has_mp_token: Boolean(settings.mp_access_token),
+        mp_access_token: settings.mp_access_token || ''
       }
     };
   }

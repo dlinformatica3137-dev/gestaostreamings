@@ -33,7 +33,7 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
   const { isDark, toggleTheme, setTheme, isFullscreen, toggleFullscreen } = useTheme();
 
   // Active sub-tab
-  const [activeTab, setActiveTab] = useState<'account' | 'license' | 'appearance' | 'integrations' | 'preferences'>('account');
+  const [activeTab, setActiveTab] = useState<'account' | 'license' | 'appearance' | 'preferences'>('account');
 
   // Account form
   const [accountName, setAccountName] = useState<string>(user?.full_name || '');
@@ -49,9 +49,6 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState<boolean>(false);
   const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
-
-  // Webhook copy
-  const [copiedWebhook, setCopiedWebhook] = useState<boolean>(false);
 
   // Toast state
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -135,14 +132,6 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
     }
   };
 
-  const webhookUrl = `${window.location.origin}/api/license/webhook`;
-
-  const handleCopyWebhook = () => {
-    navigator.clipboard.writeText(webhookUrl);
-    setCopiedWebhook(true);
-    setTimeout(() => setCopiedWebhook(false), 2500);
-  };
-
   return (
     <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto">
       {/* Toast Notification */}
@@ -164,7 +153,7 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
           <span>Configurações do Sistema</span>
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-          Gerencie seu perfil, status da licença SaaS, credenciais de pagamento e aparência
+          Gerencie seu perfil, status da licença SaaS, segurança e aparência
         </p>
       </div>
 
@@ -192,18 +181,6 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
         >
           <ShieldCheck className="w-4 h-4" />
           <span>Licença SaaS</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('integrations')}
-          className={`flex items-center gap-2 px-4 py-2.5 font-semibold border-b-2 whitespace-nowrap transition-colors ${
-            activeTab === 'integrations'
-              ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-              : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-          }`}
-        >
-          <CreditCard className="w-4 h-4" />
-          <span>Mercado Pago & Webhook</span>
         </button>
 
         <button
@@ -497,60 +474,6 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
         </div>
       )}
 
-      {/* Tab: Mercado Pago & Webhook */}
-      {activeTab === 'integrations' && (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-6">
-          <div className="space-y-2">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-blue-600" />
-              <span>Configuração do Mercado Pago (Proprietário do SaaS)</span>
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Para receber os pagamentos de R$ 199,00 das licenças diretamente na sua conta bancária do Mercado Pago
-            </p>
-          </div>
-
-          {/* Webhook Endpoint */}
-          <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
-            <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
-              URL do Webhook Oficial para Cadastrar no Mercado Pago:
-            </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                readOnly
-                value={webhookUrl}
-                className="flex-1 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-mono text-slate-800 dark:text-slate-200 select-all"
-              />
-              <button
-                onClick={handleCopyWebhook}
-                className="flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white rounded-lg text-xs font-semibold shrink-0"
-              >
-                <Copy className="w-3.5 h-3.5" />
-                <span>{copiedWebhook ? 'Copiado!' : 'Copiar URL'}</span>
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-500">
-              No painel do Mercado Pago (Webhooks / IPN), configure esta URL para receber eventos de <strong>Pagamentos (payment)</strong>.
-            </p>
-          </div>
-
-          {/* Environment Variables Guide */}
-          <div className="space-y-3 text-xs">
-            <h4 className="font-bold text-slate-800 dark:text-slate-200">
-              Variáveis de Ambiente no Servidor (.env):
-            </h4>
-            <div className="p-3 bg-slate-900 text-slate-200 rounded-xl font-mono text-[11px] space-y-1">
-              <div>MERCADO_PAGO_ACCESS_TOKEN="APP_USR-xxxxxx"</div>
-              <div>MERCADO_PAGO_PUBLIC_KEY="APP_USR-xxxxxx"</div>
-              <div>MERCADO_PAGO_WEBHOOK_SECRET="sua_chave_secreta"</div>
-            </div>
-            <p className="text-slate-500">
-              Por segurança, os tokens de acesso nunca são expostos no frontend ou em tabelas públicas. Toda a criação de preferência e validação de webhook acontece no backend seguro.
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Tab: Aparência */}
       {activeTab === 'appearance' && (

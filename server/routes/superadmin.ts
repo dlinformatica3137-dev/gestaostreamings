@@ -219,7 +219,8 @@ superAdminRouter.put('/settings', superAdminMiddleware, (req: Request, res: Resp
     settings: {
       lifetime_price: updated.lifetime_price,
       trial_duration_hours: updated.trial_duration_hours,
-      has_mp_token: Boolean(updated.mp_access_token)
+      has_mp_token: Boolean(updated.mp_access_token),
+      mp_access_token: updated.mp_access_token || ''
     }
   });
 });

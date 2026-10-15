@@ -104,6 +104,7 @@ interface OverviewData {
     lifetime_price: number;
     trial_duration_hours: number;
     has_mp_token: boolean;
+    mp_access_token?: string;
   };
 }
 
@@ -144,7 +145,10 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
   const [confirmMasterPass, setConfirmMasterPass] = useState('');
   const [settingLifetimePrice, setSettingLifetimePrice] = useState('199');
   const [settingTrialHours, setSettingTrialHours] = useState('24');
+  const [settingMpAccessToken, setSettingMpAccessToken] = useState('');
+  const [showMpToken, setShowMpToken] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
+  const [savingMpSettings, setSavingMpSettings] = useState(false);
 
   // Load overview data if token exists
   const fetchOverview = async (authToken?: string) => {
@@ -172,6 +176,9 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
       setOverview(data);
       setSettingLifetimePrice(String(data.settings.lifetime_price || 199));
       setSettingTrialHours(String(data.settings.trial_duration_hours || 24));
+      if (data.settings?.mp_access_token !== undefined) {
+        setSettingMpAccessToken(data.settings.mp_access_token || '');
+      }
     } catch (err: any) {
       showFeedback(err.message || 'Erro ao conectar ao servidor', 'error');
     } finally {
@@ -421,6 +428,49 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
   };
 
   // Settings handlers
+  const handleSaveMercadoPago = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!token) return;
+
+    const trimmedToken = settingMpAccessToken.trim();
+    if (trimmedToken && !trimmedToken.startsWith('APP_USR-')) {
+      const confirmSave = window.confirm(
+        'Atenção: O Access Token informado não começa com "APP_USR-". O Mercado Pago exige um token de produção iniciado em "APP_USR-" para receber pagamentos Pix reais. Deseja salvar mesmo assim?'
+      );
+      if (!confirmSave) return;
+    }
+
+    setSavingMpSettings(true);
+    try {
+      const res = await fetch('/api/superadmin/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-super-admin-token': token
+        },
+        body: JSON.stringify({
+          lifetime_price: Number(settingLifetimePrice),
+          trial_duration_hours: Number(settingTrialHours),
+          mp_access_token: trimmedToken
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      showFeedback(
+        trimmedToken
+          ? 'Token do Mercado Pago salvo com sucesso! O sistema está pronto para receber Pix das licenças.'
+          : 'Configurações atualizadas com sucesso!'
+      );
+      fetchOverview();
+    } catch (err: any) {
+      showFeedback(err.message, 'error');
+    } finally {
+      setSavingMpSettings(false);
+    }
+  };
+
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!token) return;
@@ -435,7 +485,8 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
         },
         body: JSON.stringify({
           lifetime_price: Number(settingLifetimePrice),
-          trial_duration_hours: Number(settingTrialHours)
+          trial_duration_hours: Number(settingTrialHours),
+          mp_access_token: settingMpAccessToken.trim()
         })
       });
 
@@ -1315,137 +1366,268 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
 
       {/* ==================== TAB 3: CONFIGURAÇÕES DO SAAS ==================== */}
       {activeTab === 'settings' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Saas Business Configuration */}
+        <div className="space-y-6">
+          {/* Card 1: Mercado Pago Configuration (Proprietário do SaaS) */}
           <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-5">
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
-              <Settings className="w-5 h-5 text-blue-600" />
-              <div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-sm">
-                  Configurações Comerciais do SaaS
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Defina o valor da licença vitalícia e o tempo padrão do teste para novos cadastros.
-                </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-sky-500/10 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400 flex items-center justify-center font-black text-sm">
+                  MP
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-slate-900 dark:text-white text-base">
+                      Mercado Pago (Proprietário do SaaS)
+                    </h3>
+                    {settingMpAccessToken && settingMpAccessToken.startsWith('APP_USR-') ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                        <CheckCircle2 className="w-3 h-3" /> Conectado (Pronto para Pix)
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                        <AlertTriangle className="w-3 h-3" /> Aguardando Token APP_USR
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Receba os pagamentos de R$ {Number(settingLifetimePrice || 199).toFixed(2)} das licenças SaaS diretamente na sua conta bancária do Mercado Pago via Pix automático.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <form onSubmit={handleSaveSettings} className="space-y-4">
+            <form onSubmit={handleSaveMercadoPago} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Valor da Licença Vitalícia (R$)
+                  Access Token de Produção (Começa com APP_USR)
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                    R$
-                  </span>
                   <input
-                    type="number"
-                    step="0.01"
-                    value={settingLifetimePrice}
-                    onChange={(e) => setSettingLifetimePrice(e.target.value)}
-                    required
-                    className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
+                    type={showMpToken ? 'text' : 'password'}
+                    value={settingMpAccessToken}
+                    onChange={(e) => setSettingMpAccessToken(e.target.value)}
+                    placeholder="APP_USR-0000000000000000-000000-00000000000000000000000000000000-000000000"
+                    className="w-full pl-3 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-mono text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-sky-500"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowMpToken(!showMpToken)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                  >
+                    {showMpToken ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
                 </div>
-                <span className="text-[10px] text-slate-400">
-                  Valor exibido no botão "Ative - R$ 199 Vitalício" e cobrado no checkout do Mercado Pago.
-                </span>
+                <div className="mt-1 flex items-center justify-between text-[11px]">
+                  <span className="text-slate-500">
+                    Basta colar apenas o seu Token de Produção gerado no painel do Mercado Pago.
+                  </span>
+                  {settingMpAccessToken && !settingMpAccessToken.startsWith('APP_USR-') && (
+                    <span className="text-rose-500 font-semibold">
+                      Atenção: o token deve começar com "APP_USR-"
+                    </span>
+                  )}
+                </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Duração Padrão do Teste Grátis (Horas)
-                </label>
-                <input
-                  type="number"
-                  value={settingTrialHours}
-                  onChange={(e) => setSettingTrialHours(e.target.value)}
-                  required
-                  min="1"
-                  max="720"
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <span className="text-[10px] text-slate-400">
-                  Tempo que o novo cliente recebe ao criar uma conta gratuita (padrão: 24 horas).
-                </span>
+              {/* Guia Rápido */}
+              <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1.5">
+                <p className="font-bold text-slate-800 dark:text-slate-200">
+                  📌 Onde encontrar seu Token no Mercado Pago:
+                </p>
+                <ol className="list-decimal list-inside space-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                  <li>
+                    Acesse o portal{' '}
+                    <a
+                      href="https://www.mercadopago.com.br/developers/panel"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sky-600 dark:text-sky-400 underline font-semibold inline-flex items-center gap-0.5"
+                    >
+                      Mercado Pago Developers <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>Clique na sua aplicação em <strong>Suas integrações</strong> (ou crie uma se ainda não tiver).</li>
+                  <li>No menu lateral esquerdo, clique em <strong>Credenciais de Produção</strong>.</li>
+                  <li>Copie o <strong>Access Token</strong> (que inicia com <code className="text-sky-600 font-bold">APP_USR-</code>) e cole acima.</li>
+                </ol>
               </div>
 
-              <button
-                type="submit"
-                disabled={savingSettings}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-xs transition-all cursor-pointer disabled:opacity-50"
-              >
-                {savingSettings ? 'Salvando...' : 'Salvar Alterações Comerciais'}
-              </button>
+              {/* Webhook URL Box */}
+              <div className="p-3.5 bg-sky-50/60 dark:bg-sky-950/20 rounded-xl border border-sky-100 dark:border-sky-900/40 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-sky-900 dark:text-sky-200">
+                    URL de Notificação Instantânea (Webhook do SaaS)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const url = `${window.location.origin}/api/license/webhook`;
+                      navigator.clipboard.writeText(url);
+                      showFeedback('URL do Webhook copiada para a área de transferência!');
+                    }}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-white dark:bg-slate-800 border border-sky-200 dark:border-sky-800 rounded-lg text-[11px] font-bold text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-slate-700 cursor-pointer shadow-2xs"
+                  >
+                    <Copy className="w-3 h-3" /> Copiar Webhook
+                  </button>
+                </div>
+                <code className="block p-2 bg-white dark:bg-slate-900 border border-sky-200 dark:border-sky-900 rounded-lg text-[11px] font-mono text-sky-800 dark:text-sky-300 break-all select-all">
+                  {typeof window !== 'undefined' ? `${window.location.origin}/api/license/webhook` : 'https://seu-dominio.com/api/license/webhook'}
+                </code>
+                <p className="text-[10px] text-sky-700 dark:text-sky-400">
+                  Cadastre esta URL em <strong>Notificações Webhook</strong> no Mercado Pago selecionando o evento <strong>Pagamentos (payment)</strong> para que o sistema aprove a licença do cliente instantaneamente após o Pix.
+                </p>
+              </div>
+
+              <div className="flex justify-end pt-1">
+                <button
+                  type="submit"
+                  disabled={savingMpSettings}
+                  className="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-xs shadow-xs transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                >
+                  {savingMpSettings ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Salvando Credenciais...
+                    </>
+                  ) : (
+                    'Salvar Token do Mercado Pago'
+                  )}
+                </button>
+              </div>
             </form>
           </div>
 
-          {/* Master Password Management */}
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-5">
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
-              <KeyRound className="w-5 h-5 text-amber-500" />
-              <div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-sm">
-                  Alterar Senha Mestre do Super Admin
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Troque a senha que protege o acesso a esta página exclusiva do Dono.
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Saas Business Configuration */}
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-5">
+              <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                <Settings className="w-5 h-5 text-blue-600" />
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm">
+                    Configurações Comerciais do SaaS
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Defina o valor da licença vitalícia e o tempo padrão do teste para novos cadastros.
+                  </p>
+                </div>
               </div>
+
+              <form onSubmit={handleSaveSettings} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Valor da Licença Vitalícia (R$)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                      R$
+                    </span>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={settingLifetimePrice}
+                      onChange={(e) => setSettingLifetimePrice(e.target.value)}
+                      required
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400">
+                    Valor cobrado no Pix/Mercado Pago para ativação da licença do cliente.
+                  </span>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Duração Padrão do Teste Grátis (Horas)
+                  </label>
+                  <input
+                    type="number"
+                    value={settingTrialHours}
+                    onChange={(e) => setSettingTrialHours(e.target.value)}
+                    required
+                    min="1"
+                    max="720"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <span className="text-[10px] text-slate-400">
+                    Tempo que o novo cliente recebe ao criar uma conta gratuita (padrão: 24 horas).
+                  </span>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={savingSettings}
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-xs transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {savingSettings ? 'Salvando...' : 'Salvar Alterações Comerciais'}
+                </button>
+              </form>
             </div>
 
-            <form onSubmit={handleChangeMasterPassword} className="space-y-3.5">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Senha Mestre Atual
-                </label>
-                <input
-                  type="password"
-                  value={currentMasterPass}
-                  onChange={(e) => setCurrentMasterPass(e.target.value)}
-                  required
-                  placeholder="Informe a senha atual..."
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500 dark:text-white"
-                />
+            {/* Master Password Management */}
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-5">
+              <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                <KeyRound className="w-5 h-5 text-amber-500" />
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm">
+                    Alterar Senha Mestre do Super Admin
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Troque a senha que protege o acesso a esta página exclusiva do Dono.
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Nova Senha Mestre (mínimo 6 dígitos)
-                </label>
-                <input
-                  type="password"
-                  value={newMasterPass}
-                  onChange={(e) => setNewMasterPass(e.target.value)}
-                  required
-                  minLength={6}
-                  placeholder="Nova senha mestre..."
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500 dark:text-white"
-                />
-              </div>
+              <form onSubmit={handleChangeMasterPassword} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Senha Mestre Atual
+                  </label>
+                  <input
+                    type="password"
+                    value={currentMasterPass}
+                    onChange={(e) => setCurrentMasterPass(e.target.value)}
+                    required
+                    placeholder="Informe a senha atual..."
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500 dark:text-white"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Confirmar Nova Senha Mestre
-                </label>
-                <input
-                  type="password"
-                  value={confirmMasterPass}
-                  onChange={(e) => setConfirmMasterPass(e.target.value)}
-                  required
-                  placeholder="Repita a nova senha..."
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500 dark:text-white"
-                />
-              </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Nova Senha Mestre (mínimo 6 dígitos)
+                  </label>
+                  <input
+                    type="password"
+                    value={newMasterPass}
+                    onChange={(e) => setNewMasterPass(e.target.value)}
+                    required
+                    minLength={6}
+                    placeholder="Nova senha mestre..."
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500 dark:text-white"
+                  />
+                </div>
 
-              <button
-                type="submit"
-                className="w-full py-2.5 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-bold rounded-xl text-xs shadow-xs transition-all cursor-pointer"
-              >
-                Atualizar Senha Mestre
-              </button>
-            </form>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Confirmar Nova Senha Mestre
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmMasterPass}
+                    onChange={(e) => setConfirmMasterPass(e.target.value)}
+                    required
+                    placeholder="Repita a nova senha..."
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500 dark:text-white"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-bold rounded-xl text-xs shadow-xs transition-all cursor-pointer"
+                >
+                  Atualizar Senha Mestre
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}

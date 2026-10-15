@@ -5,20 +5,72 @@ import { authMiddleware, AuthenticatedRequest } from './auth.ts';
 
 export const mpRouter = Router();
 
-const MP_ACCESS_TOKEN = process.env.MERCADO_PAGO_ACCESS_TOKEN || '';
-const MP_WEBHOOK_SECRET = process.env.MERCADO_PAGO_WEBHOOK_SECRET || '';
-const APP_URL = process.env.APP_URL || 'http://localhost:3000';
+function getMpAccessToken(): string {
+  const settings = db.getSystemSettings();
+  return (settings.mp_access_token || process.env.MERCADO_PAGO_ACCESS_TOKEN || '').trim();
+}
 
-// POST /api/license/create-preference - Generate Mercado Pago preference for R$ 199,00
+function getMpWebhookSecret(): string {
+  const settings = db.getSystemSettings();
+  return (settings.mp_webhook_secret || process.env.MERCADO_PAGO_WEBHOOK_SECRET || '').trim();
+}
+
+// POST /api/license/create-preference - Generate Mercado Pago preference / Pix for SaaS License
 mpRouter.post('/create-preference', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
   const tenantId = req.tenantId!;
   const user = req.user;
-  const amount = 199.00;
-
+  const settings = db.getSystemSettings();
+  const amount = settings.lifetime_price || 199.00;
   const transactionId = `tx_${Date.now()}`;
+  const token = getMpAccessToken();
+  const appUrl = (process.env.APP_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
 
-  // If real MP_ACCESS_TOKEN is configured in environment, call Mercado Pago API
-  if (MP_ACCESS_TOKEN) {
+  // If real MP_ACCESS_TOKEN is configured in Super Admin or environment, call Mercado Pago API
+  if (token && token.startsWith('APP_USR-')) {
+    let pixQrCode = '';
+    let pixQrCodeBase64 = '';
+    let mpPaymentId = '';
+    let preferenceId = '';
+    let initPoint = '';
+    let sandboxInitPoint = '';
+
+    // 1. Generate direct Pix payment via Mercado Pago API
+    try {
+      const pixRes = await fetch('https://api.mercadopago.com/v1/payments', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'X-Idempotency-Key': `${tenantId}-${transactionId}`
+        },
+        body: JSON.stringify({
+          transaction_amount: amount,
+          description: 'Gestor de Streamings - Licença Vitalícia',
+          payment_method_id: 'pix',
+          payer: {
+            email: user.email || 'contato@gestorstream.com',
+            first_name: user.full_name?.split(' ')[0] || 'Cliente',
+            last_name: user.full_name?.split(' ').slice(1).join(' ') || 'SaaS'
+          },
+          external_reference: `${tenantId}:${transactionId}`,
+          notification_url: `${appUrl}/api/license/webhook`
+        })
+      });
+
+      if (pixRes.ok) {
+        const pixData = await pixRes.json();
+        mpPaymentId = String(pixData.id);
+        pixQrCode = pixData.point_of_interaction?.transaction_data?.qr_code || '';
+        pixQrCodeBase64 = pixData.point_of_interaction?.transaction_data?.qr_code_base64 || '';
+      } else {
+        const errJson = await pixRes.json().catch(() => ({}));
+        console.warn('Mercado Pago direct Pix notice:', errJson);
+      }
+    } catch (pixErr: any) {
+      console.warn('Erro ao chamar API de Pix do Mercado Pago:', pixErr?.message);
+    }
+
+    // 2. Generate Checkout Pro preference (Cartão / Boleto / Saldo MP)
     try {
       const preferencePayload = {
         items: [
@@ -40,59 +92,63 @@ mpRouter.post('/create-preference', authMiddleware, async (req: AuthenticatedReq
         },
         external_reference: `${tenantId}:${transactionId}`,
         back_urls: {
-          success: `${APP_URL}/?payment=success&tx=${transactionId}`,
-          pending: `${APP_URL}/?payment=pending&tx=${transactionId}`,
-          failure: `${APP_URL}/?payment=failure&tx=${transactionId}`
+          success: `${appUrl}/?payment=success&tx=${transactionId}`,
+          pending: `${appUrl}/?payment=pending&tx=${transactionId}`,
+          failure: `${appUrl}/?payment=failure&tx=${transactionId}`
         },
         auto_return: 'approved',
-        notification_url: `${APP_URL}/api/license/webhook`,
-        payment_methods: {
-          excluded_payment_types: [],
-          installments: 12
-        }
+        notification_url: `${appUrl}/api/license/webhook`
       };
 
       const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${MP_ACCESS_TOKEN}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(preferencePayload)
       });
 
-      if (!mpResponse.ok) {
-        const errorData = await mpResponse.json();
-        console.error('Mercado Pago API error:', errorData);
-        // Fall back to direct checkout with simulated preference
-      } else {
+      if (mpResponse.ok) {
         const data = await mpResponse.json();
-        const tx = db.addTransaction({
-          id: transactionId,
-          tenant_id: tenantId,
-          mp_preference_id: data.id,
-          amount: amount,
-          status: 'pending',
-          payment_method: 'Mercado Pago Checkout',
-          init_point: data.init_point,
-          sandbox_init_point: data.sandbox_init_point,
-          created_at: new Date().toISOString()
-        });
-
-        return res.json({
-          preferenceId: data.id,
-          initPoint: data.init_point,
-          sandboxInitPoint: data.sandbox_init_point,
-          transaction: tx
-        });
+        preferenceId = data.id;
+        initPoint = data.init_point;
+        sandboxInitPoint = data.sandbox_init_point;
       }
-    } catch (err: any) {
-      console.error('Failed to create MP preference via API:', err);
+    } catch (prefErr: any) {
+      console.warn('Erro ao criar preferência de Checkout:', prefErr?.message);
+    }
+
+    if (pixQrCode || preferenceId) {
+      const tx = db.addTransaction({
+        id: transactionId,
+        tenant_id: tenantId,
+        mp_preference_id: preferenceId || `pref_${transactionId}`,
+        mp_payment_id: mpPaymentId || undefined,
+        amount: amount,
+        status: 'pending',
+        payment_method: pixQrCode ? 'Pix Oficial Mercado Pago' : 'Mercado Pago Checkout',
+        pix_code: pixQrCode || undefined,
+        init_point: initPoint || undefined,
+        sandbox_init_point: sandboxInitPoint || undefined,
+        created_at: new Date().toISOString()
+      });
+
+      return res.json({
+        preferenceId: preferenceId || `pref_${transactionId}`,
+        initPoint: initPoint || `${appUrl}/checkout/${transactionId}`,
+        sandboxInitPoint,
+        pixCode: pixQrCode,
+        qrCodeBase64: pixQrCodeBase64,
+        paymentId: mpPaymentId,
+        amount: amount,
+        transaction: tx,
+        isConfigured: true
+      });
     }
   }
 
-  // Pre-configured seamless checkout with Pix Copy & Paste & simulated QR code
-  // when credentials are in setup/sandbox mode
+  // Pre-configured fallback Pix Copy & Paste when credentials are in setup/sandbox mode
   const pixCopyPaste = `00020101021226840014br.gov.bcb.pix2562pix-gestor.streamings.com/qr/v2/${transactionId}5204000053039865406199.005802BR5925GESTOR DE STREAMINGS SAAS6009SAO PAULO62070503***6304${Math.random().toString(16).substring(2, 6).toUpperCase()}`;
 
   const tx = db.addTransaction({
@@ -108,11 +164,11 @@ mpRouter.post('/create-preference', authMiddleware, async (req: AuthenticatedReq
 
   return res.json({
     preferenceId: `pref_${transactionId}`,
-    initPoint: `${APP_URL}/checkout/${transactionId}`,
+    initPoint: `${appUrl}/checkout/${transactionId}`,
     pixCode: pixCopyPaste,
     amount: amount,
     transaction: tx,
-    isConfigured: Boolean(MP_ACCESS_TOKEN)
+    isConfigured: Boolean(token && token.startsWith('APP_USR-'))
   });
 });
 
@@ -127,11 +183,14 @@ mpRouter.post('/webhook', async (req, res) => {
 
   console.log(`[Mercado Pago Webhook Received] Type: ${notificationType}, ID: ${paymentId}`);
 
-  // Validate webhook signature if MP_WEBHOOK_SECRET is provided
+  const webhookSecret = getMpWebhookSecret();
+  const token = getMpAccessToken();
+
+  // Validate webhook signature if webhookSecret is provided
   const xSignature = req.headers['x-signature'] as string;
   const xRequestId = req.headers['x-request-id'] as string;
 
-  if (MP_WEBHOOK_SECRET && xSignature) {
+  if (webhookSecret && xSignature) {
     try {
       const parts = xSignature.split(',');
       let ts = '';
@@ -143,7 +202,7 @@ mpRouter.post('/webhook', async (req, res) => {
       });
 
       const manifest = `id:${paymentId};request-id:${xRequestId};ts:${ts};`;
-      const expectedHash = crypto.createHmac('sha256', MP_WEBHOOK_SECRET).update(manifest).digest('hex');
+      const expectedHash = crypto.createHmac('sha256', webhookSecret).update(manifest).digest('hex');
 
       if (expectedHash !== v1) {
         console.warn('Mercado Pago Webhook signature mismatch.');
@@ -154,11 +213,11 @@ mpRouter.post('/webhook', async (req, res) => {
   }
 
   // If we have an Access Token, verify transaction directly against Mercado Pago API
-  if (paymentId && MP_ACCESS_TOKEN) {
+  if (paymentId && token) {
     try {
       const paymentRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
         headers: {
-          'Authorization': `Bearer ${MP_ACCESS_TOKEN}`
+          'Authorization': `Bearer ${token}`
         }
       });
 

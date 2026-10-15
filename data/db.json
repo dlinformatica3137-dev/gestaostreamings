@@ -136,54 +136,55 @@
       "id": "lic_tenant_sample_trial_01",
       "tenant_id": "tenant_sample_trial_01",
       "type": "trial",
-      "status": "expired",
+      "status": "active",
       "trial_started_at": "2026-10-12T04:40:42.894Z",
-      "trial_expires_at": "2026-10-14T17:27:16.302Z",
+      "trial_expires_at": "2026-10-16T18:26:30.419Z",
       "price": 199
     },
     {
       "id": "lic_tenant_sample_expired_02",
       "tenant_id": "tenant_sample_expired_02",
       "type": "trial",
-      "status": "expired",
+      "status": "active",
       "trial_started_at": "2026-10-11T07:40:42.894Z",
-      "trial_expires_at": "2026-10-14T17:27:16.302Z",
+      "trial_expires_at": "2026-10-16T18:26:39.925Z",
       "price": 199
     },
     {
       "id": "lic_tenant_sample_pending_03",
       "tenant_id": "tenant_sample_pending_03",
       "type": "trial",
-      "status": "expired",
+      "status": "active",
       "trial_started_at": "2026-10-11T16:40:42.894Z",
-      "trial_expires_at": "2026-10-14T17:27:16.302Z",
+      "trial_expires_at": "2026-10-16T18:26:32.997Z",
       "price": 199
     },
     {
       "id": "lic_tenant_sample_lifetime_04",
       "tenant_id": "tenant_sample_lifetime_04",
       "type": "trial",
-      "status": "expired",
+      "status": "active",
       "trial_started_at": "2026-10-10T12:40:42.894Z",
-      "trial_expires_at": "2026-10-14T17:27:16.302Z",
+      "trial_expires_at": "2026-10-16T18:26:45.909Z",
       "price": 199
     },
     {
       "id": "lic_tenant_1791816871129",
       "tenant_id": "tenant_1791816871129",
-      "type": "trial",
-      "status": "expired",
+      "type": "lifetime",
+      "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129Z",
-      "trial_expires_at": "2026-10-14T17:27:16.302Z",
-      "price": 199
+      "trial_expires_at": "2126-09-21T19:00:59.509Z",
+      "price": 199,
+      "activated_at": "2026-10-15T18:41:48.702Z"
     },
     {
       "id": "lic_d9aeb1ac-a4fc-b832-1b43-cc715091926c",
       "tenant_id": "d9aeb1ac-a4fc-b832-1b43-cc715091926c",
       "type": "trial",
-      "status": "expired",
+      "status": "active",
       "trial_started_at": "2026-10-13T06:32:24.618+00:00",
-      "trial_expires_at": "2026-10-14T17:27:16.302Z",
+      "trial_expires_at": "2026-10-16T18:26:23.006Z",
       "price": 199
     },
     {
@@ -192,7 +193,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T18:08:49.486Z",
+      "trial_expires_at": "2126-09-21T19:00:59.537Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "transaction_id": "tx_vitalicio_tenant_marcofilho",
       "price": 199
@@ -201,29 +202,39 @@
       "id": "lic_tenant_1791979324661",
       "tenant_id": "tenant_1791979324661",
       "type": "trial",
-      "status": "expired",
+      "status": "active",
       "trial_started_at": "2026-10-14T12:02:04.661Z",
-      "trial_expires_at": "2026-10-15T12:02:04.661Z",
+      "trial_expires_at": "2026-10-17T18:26:16.138Z",
       "price": 199
     },
     {
       "id": "lic_6d98f40b-5452-d460-1755-46d28b0920ba",
       "tenant_id": "6d98f40b-5452-d460-1755-46d28b0920ba",
-      "type": "trial",
-      "status": "expired",
+      "type": "lifetime",
+      "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2026-10-14T18:10:46.590Z",
+      "trial_expires_at": "2126-09-21T19:00:59.537Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
     {
       "id": "lic_0fd66ada-3f1f-dfea-aa7c-6b6febe78b27",
       "tenant_id": "0fd66ada-3f1f-dfea-aa7c-6b6febe78b27",
-      "type": "trial",
-      "status": "expired",
+      "type": "lifetime",
+      "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2026-10-14T18:10:46.590Z",
+      "trial_expires_at": "2126-09-21T19:00:59.537Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
+      "price": 199
+    },
+    {
+      "id": "lic_3ef67fdf-43bc-3422-d240-4c90ebfbda11",
+      "tenant_id": "3ef67fdf-43bc-3422-d240-4c90ebfbda11",
+      "type": "lifetime",
+      "status": "active",
+      "trial_started_at": "2026-10-15T18:41:48.702Z",
+      "trial_expires_at": "2126-09-21T19:00:59.509Z",
+      "activated_at": "2026-10-15T18:41:48.702Z",
       "price": 199
     }
   ],
@@ -266,23 +277,25 @@
       "tenant_id": "tenant_1791816871129",
       "mp_preference_id": "pref_tx_1791817347295",
       "amount": 199,
-      "status": "cancelled",
+      "status": "approved",
       "payment_method": "Pix / Mercado Pago",
       "pix_code": "00020101021226840014br.gov.bcb.pix2562pix-gestor.streamings.com/qr/v2/tx_17918173472955204000053039865406199.005802BR5925GESTOR DE STREAMINGS SAAS6009SAO PAULO62070503***6304BE5F",
       "created_at": "2026-10-12T15:02:27.295Z",
       "paid_at": "2026-10-12T15:02:27.295Z",
-      "mp_payment_id": "tx_vitalicio_tenant_1791816871129"
+      "mp_payment_id": "super_admin_1792089708695"
     },
     {
       "id": "tx_1791889189636",
       "tenant_id": "tenant_1791816871129",
       "mp_preference_id": "478616081-3e230ae7-4617-4165-8dc0-647326ceea5f",
       "amount": 199,
-      "status": "pending",
+      "status": "approved",
       "payment_method": "Mercado Pago Checkout",
       "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=478616081-3e230ae7-4617-4165-8dc0-647326ceea5f",
       "sandbox_init_point": "https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=478616081-3e230ae7-4617-4165-8dc0-647326ceea5f",
-      "created_at": "2026-10-13T10:59:50.125Z"
+      "created_at": "2026-10-13T10:59:50.125Z",
+      "paid_at": "2026-10-15T18:41:48.702Z",
+      "mp_payment_id": "super_admin_1792089708695"
     },
     {
       "id": "4b78eab4-ce49-62a3-9154-403439e474f3",
@@ -301,22 +314,26 @@
       "tenant_id": "tenant_1791816871129",
       "mp_preference_id": "478616081-432feb3e-5367-49d8-8a72-ffc72249ac92",
       "amount": 199,
-      "status": "pending",
+      "status": "approved",
       "payment_method": "Mercado Pago Checkout",
       "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=478616081-432feb3e-5367-49d8-8a72-ffc72249ac92",
       "sandbox_init_point": "https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=478616081-432feb3e-5367-49d8-8a72-ffc72249ac92",
-      "created_at": "2026-10-13T13:18:26.204Z"
+      "created_at": "2026-10-13T13:18:26.204Z",
+      "paid_at": "2026-10-15T18:41:48.702Z",
+      "mp_payment_id": "super_admin_1792089708695"
     },
     {
       "id": "tx_1791897812155",
       "tenant_id": "tenant_1791816871129",
       "mp_preference_id": "478616081-3b191d5d-e67a-4828-a475-193ebb4c757e",
       "amount": 199,
-      "status": "pending",
+      "status": "approved",
       "payment_method": "Mercado Pago Checkout",
       "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=478616081-3b191d5d-e67a-4828-a475-193ebb4c757e",
       "sandbox_init_point": "https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=478616081-3b191d5d-e67a-4828-a475-193ebb4c757e",
-      "created_at": "2026-10-13T13:23:32.610Z"
+      "created_at": "2026-10-13T13:23:32.610Z",
+      "paid_at": "2026-10-15T18:41:48.702Z",
+      "mp_payment_id": "super_admin_1792089708695"
     },
     {
       "id": "tx_1791979813446",
@@ -328,6 +345,26 @@
       "mp_preference_id": "478616081-ceeee2d3-af3e-4ae3-9d4f-f280fdcd38c5",
       "mp_payment_id": "",
       "created_at": "2026-10-14T12:10:13.912Z"
+    },
+    {
+      "id": "tx_1792090804491",
+      "tenant_id": "tenant_marcofilho",
+      "mp_preference_id": "pref_tx_1792090804491",
+      "amount": 199,
+      "status": "pending",
+      "payment_method": "Pix / Mercado Pago",
+      "pix_code": "00020101021226840014br.gov.bcb.pix2562pix-gestor.streamings.com/qr/v2/tx_17920908044915204000053039865406199.005802BR5925GESTOR DE STREAMINGS SAAS6009SAO PAULO62070503***63049304",
+      "created_at": "2026-10-15T19:00:04.492Z"
+    },
+    {
+      "id": "tx_1792090859545",
+      "tenant_id": "tenant_marcofilho",
+      "mp_preference_id": "pref_tx_1792090859545",
+      "amount": 199,
+      "status": "pending",
+      "payment_method": "Pix / Mercado Pago",
+      "pix_code": "00020101021226840014br.gov.bcb.pix2562pix-gestor.streamings.com/qr/v2/tx_17920908595455204000053039865406199.005802BR5925GESTOR DE STREAMINGS SAAS6009SAO PAULO62070503***63042BA7",
+      "created_at": "2026-10-15T19:01:00.331Z"
     }
   ],
   "applications": [
@@ -2374,8 +2411,8 @@
       "tenant_id": "tenant_1791816871129",
       "name": "instancia__jon_jon_tel_LYFY",
       "provider": "evolution",
-      "status": "connected",
-      "error_message": null,
+      "status": "disconnected",
+      "error_message": "Instância desconectada no WhatsApp. Por favor, reconecte via QR Code.",
       "api_url": "https://api.doratec.site",
       "phone_number": "+55 (85) 88159-811",
       "qr_code": null,
@@ -2638,6 +2675,62 @@
       "action": "TRIAL_EXTENDED_SUPER_ADMIN",
       "description": "Teste prorrogado em +24h pelo Super Admin",
       "created_at": "2026-10-13T14:23:41.506Z"
+    },
+    {
+      "id": "audit_1792088776138",
+      "tenant_id": "tenant_1791979324661",
+      "action": "TRIAL_EXTENDED_SUPER_ADMIN",
+      "description": "Teste prorrogado em +48h pelo Super Admin",
+      "created_at": "2026-10-15T18:26:16.138Z"
+    },
+    {
+      "id": "audit_1792088783006",
+      "tenant_id": "d9aeb1ac-a4fc-b832-1b43-cc715091926c",
+      "action": "TRIAL_EXTENDED_SUPER_ADMIN",
+      "description": "Teste prorrogado em +24h pelo Super Admin",
+      "created_at": "2026-10-15T18:26:23.006Z"
+    },
+    {
+      "id": "audit_1792088787058",
+      "tenant_id": "tenant_1791816871129",
+      "action": "TRIAL_EXTENDED_SUPER_ADMIN",
+      "description": "Teste prorrogado em +24h pelo Super Admin",
+      "created_at": "2026-10-15T18:26:27.058Z"
+    },
+    {
+      "id": "audit_1792088790419",
+      "tenant_id": "tenant_sample_trial_01",
+      "action": "TRIAL_EXTENDED_SUPER_ADMIN",
+      "description": "Teste prorrogado em +24h pelo Super Admin",
+      "created_at": "2026-10-15T18:26:30.419Z"
+    },
+    {
+      "id": "audit_1792088792997",
+      "tenant_id": "tenant_sample_pending_03",
+      "action": "TRIAL_EXTENDED_SUPER_ADMIN",
+      "description": "Teste prorrogado em +24h pelo Super Admin",
+      "created_at": "2026-10-15T18:26:32.997Z"
+    },
+    {
+      "id": "audit_1792088799925",
+      "tenant_id": "tenant_sample_expired_02",
+      "action": "TRIAL_EXTENDED_SUPER_ADMIN",
+      "description": "Teste prorrogado em +24h pelo Super Admin",
+      "created_at": "2026-10-15T18:26:39.925Z"
+    },
+    {
+      "id": "audit_1792088805909",
+      "tenant_id": "tenant_sample_lifetime_04",
+      "action": "TRIAL_EXTENDED_SUPER_ADMIN",
+      "description": "Teste prorrogado em +24h pelo Super Admin",
+      "created_at": "2026-10-15T18:26:45.909Z"
+    },
+    {
+      "id": "audit_1792089708702",
+      "tenant_id": "tenant_1791816871129",
+      "action": "LIFETIME_LICENSE_ACTIVATED",
+      "description": "Licença vitalícia ativada com sucesso. Transação: super_admin_1792089708695",
+      "created_at": "2026-10-15T18:41:48.702Z"
     }
   ],
   "used_device_fingerprints": [
