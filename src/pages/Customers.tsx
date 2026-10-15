@@ -870,21 +870,6 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                   />
                 </div>
 
-                {/* Telefone com DDD (NÃO OBRIGATÓRIO PER USER SPECIFICATION) */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    Telefone com DDD (Opcional)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="Ex: 11988887777"
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
-                  />
-                  <p className="text-[10px] text-slate-400">Pode deixar em branco caso não tenha número fixo ou comum</p>
-                </div>
-
                 {/* WhatsApp */}
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -913,20 +898,6 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                     className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
                   />
                   <p className="text-[10px] text-slate-400">Opcional para envio de avisos ou login</p>
-                </div>
-
-                {/* CPF */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    CPF (Opcional)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.cpf}
-                    onChange={(e) => setFormData({ ...formData, cpf: e.target.value })}
-                    placeholder="000.000.000-00"
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white"
-                  />
                 </div>
 
                 {/* Aplicativo */}
@@ -1318,12 +1289,14 @@ export const Customers: React.FC<CustomersProps> = ({ initialFilter, initialActi
                       </span>
                     </div>
 
-                    <div className="py-2.5 flex justify-between gap-2">
-                      <span className="text-slate-500">CPF:</span>
-                      <span className="font-mono text-slate-800 dark:text-slate-200">
-                        {selectedCustomerDetail.cpf || 'Não informado'}
-                      </span>
-                    </div>
+                    {selectedCustomerDetail.cpf && (
+                      <div className="py-2.5 flex justify-between gap-2">
+                        <span className="text-slate-500">CPF:</span>
+                        <span className="font-mono text-slate-800 dark:text-slate-200">
+                          {selectedCustomerDetail.cpf}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
