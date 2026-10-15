@@ -13,7 +13,7 @@ import { financeRouter } from './server/routes/finance.ts';
 import { whatsappRouter } from './server/routes/whatsapp.ts';
 import { exportRouter } from './server/routes/export.ts';
 import { superAdminRouter } from './server/routes/superadmin.ts';
-import { startWhatsAppScheduler } from './server/whatsappScheduler.ts';
+import { startWhatsAppScheduler, runAllTenantsAutomation } from './server/whatsappScheduler.ts';
 import { db } from './server/db.ts';
 
 dotenv.config();
@@ -42,6 +42,17 @@ async function startServer() {
 
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', service: 'Gestor de Streamings SaaS' });
+  });
+
+  // Endpoint para Cronjob externo (cron-job.org, UptimeRobot, EasyCron)
+  // Mantém o servidor Render sempre acordado (sem hibernar) e processa automações
+  app.all(['/api/cron', '/api/cron/whatsapp'], async (req, res) => {
+    try {
+      await runAllTenantsAutomation(false);
+      res.json({ status: 'ok', message: 'Cronjob executado com sucesso e servidor ativo!' });
+    } catch (e: any) {
+      res.status(500).json({ error: e?.message });
+    }
   });
 
   app.use(express.json());
