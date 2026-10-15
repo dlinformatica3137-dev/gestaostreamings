@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import crypto from 'crypto';
+import QRCode from 'qrcode';
 import { db } from '../db.ts';
 import { authMiddleware, AuthenticatedRequest } from './auth.ts';
 
@@ -13,6 +14,23 @@ function getMpAccessToken(): string {
 function getMpWebhookSecret(): string {
   const settings = db.getSystemSettings();
   return (settings.mp_webhook_secret || process.env.MERCADO_PAGO_WEBHOOK_SECRET || '').trim();
+}
+
+async function generateQrDataUrl(code: string, base64FromMp?: string): Promise<string> {
+  if (base64FromMp && base64FromMp.trim()) {
+    return base64FromMp.startsWith('data:') ? base64FromMp : `data:image/png;base64,${base64FromMp}`;
+  }
+  if (!code) return '';
+  try {
+    return await QRCode.toDataURL(code, {
+      width: 320,
+      margin: 1,
+      color: { dark: '#000000', light: '#FFFFFF' }
+    });
+  } catch (err) {
+    console.warn('Erro ao gerar imagem QRCode do Pix:', err);
+    return '';
+  }
 }
 
 // POST /api/license/create-preference - Generate Mercado Pago preference / Pix for SaaS License
@@ -134,12 +152,14 @@ mpRouter.post('/create-preference', authMiddleware, async (req: AuthenticatedReq
         created_at: new Date().toISOString()
       });
 
+      const qrImage = await generateQrDataUrl(pixQrCode, pixQrCodeBase64);
+
       return res.json({
         preferenceId: preferenceId || `pref_${transactionId}`,
         initPoint: initPoint || `${appUrl}/checkout/${transactionId}`,
         sandboxInitPoint,
         pixCode: pixQrCode,
-        qrCodeBase64: pixQrCodeBase64,
+        qrCodeBase64: qrImage,
         paymentId: mpPaymentId,
         amount: amount,
         transaction: tx,
@@ -162,10 +182,13 @@ mpRouter.post('/create-preference', authMiddleware, async (req: AuthenticatedReq
     created_at: new Date().toISOString()
   });
 
+  const qrImage = await generateQrDataUrl(pixCopyPaste);
+
   return res.json({
     preferenceId: `pref_${transactionId}`,
     initPoint: `${appUrl}/checkout/${transactionId}`,
     pixCode: pixCopyPaste,
+    qrCodeBase64: qrImage,
     amount: amount,
     transaction: tx,
     isConfigured: Boolean(token && token.startsWith('APP_USR-'))

@@ -171,10 +171,10 @@
     {
       "id": "lic_tenant_1791816871129",
       "tenant_id": "tenant_1791816871129",
-      "type": "lifetime",
-      "status": "active",
+      "type": "trial",
+      "status": "expired",
       "trial_started_at": "2026-10-12T14:54:31.129Z",
-      "trial_expires_at": "2126-09-21T19:00:59.509Z",
+      "trial_expires_at": "2026-10-14T20:12:15.665Z",
       "price": 199,
       "activated_at": "2026-10-15T18:41:48.702Z"
     },
@@ -193,7 +193,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T19:00:59.537Z",
+      "trial_expires_at": "2126-09-21T20:25:05.080Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "transaction_id": "tx_vitalicio_tenant_marcofilho",
       "price": 199
@@ -213,7 +213,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T19:00:59.537Z",
+      "trial_expires_at": "2126-09-21T20:25:05.080Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
@@ -223,17 +223,17 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T19:00:59.537Z",
+      "trial_expires_at": "2126-09-21T20:25:05.080Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
     {
       "id": "lic_3ef67fdf-43bc-3422-d240-4c90ebfbda11",
       "tenant_id": "3ef67fdf-43bc-3422-d240-4c90ebfbda11",
-      "type": "lifetime",
-      "status": "active",
+      "type": "trial",
+      "status": "expired",
       "trial_started_at": "2026-10-15T18:41:48.702Z",
-      "trial_expires_at": "2126-09-21T19:00:59.509Z",
+      "trial_expires_at": "2026-10-14T20:12:15.665Z",
       "activated_at": "2026-10-15T18:41:48.702Z",
       "price": 199
     }
@@ -365,6 +365,16 @@
       "payment_method": "Pix / Mercado Pago",
       "pix_code": "00020101021226840014br.gov.bcb.pix2562pix-gestor.streamings.com/qr/v2/tx_17920908595455204000053039865406199.005802BR5925GESTOR DE STREAMINGS SAAS6009SAO PAULO62070503***63042BA7",
       "created_at": "2026-10-15T19:01:00.331Z"
+    },
+    {
+      "id": "tx_1792095905115",
+      "tenant_id": "tenant_marcofilho",
+      "mp_preference_id": "pref_tx_1792095905115",
+      "amount": 199,
+      "status": "pending",
+      "payment_method": "Pix / Mercado Pago",
+      "pix_code": "00020101021226840014br.gov.bcb.pix2562pix-gestor.streamings.com/qr/v2/tx_17920959051155204000053039865406199.005802BR5925GESTOR DE STREAMINGS SAAS6009SAO PAULO62070503***63042B29",
+      "created_at": "2026-10-15T20:25:05.115Z"
     }
   ],
   "applications": [
