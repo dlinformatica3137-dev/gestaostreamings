@@ -519,13 +519,13 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
     if (!overview?.tenants) return [];
     return overview.tenants.filter((t) => {
       // Search
-      const search = trialSearch.toLowerCase();
+      const search = trialSearch.toLowerCase().trim();
       const matchSearch =
         !search ||
-        t.name.toLowerCase().includes(search) ||
-        t.owner.full_name.toLowerCase().includes(search) ||
-        t.owner.email.toLowerCase().includes(search) ||
-        t.owner.phone.includes(search);
+        (t.name || '').toLowerCase().includes(search) ||
+        (t.owner?.full_name || '').toLowerCase().includes(search) ||
+        (t.owner?.email || '').toLowerCase().includes(search) ||
+        (t.owner?.phone || '').toLowerCase().includes(search);
 
       // Status
       let matchStatus = true;
@@ -534,11 +534,11 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
         : (t.license?.remaining_seconds || 0) > 0;
 
       if (trialStatusFilter === 'active_trial') {
-        matchStatus = t.license.type === 'trial' && (!t.license.is_expired || isTrialFuture);
+        matchStatus = (t.license?.type === 'trial' || !t.license?.type) && (!t.license?.is_expired || isTrialFuture);
       } else if (trialStatusFilter === 'expired_trial') {
-        matchStatus = t.license.type === 'trial' && (t.license.is_expired === true && !isTrialFuture);
+        matchStatus = t.license?.type === 'trial' && (t.license?.is_expired === true && !isTrialFuture);
       } else if (trialStatusFilter === 'lifetime') {
-        matchStatus = t.license.type === 'lifetime';
+        matchStatus = t.license?.type === 'lifetime';
       }
 
       return matchSearch && matchStatus;
@@ -548,15 +548,17 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
   const filteredTransactions = useMemo(() => {
     if (!overview?.transactions) return [];
     return overview.transactions.filter((tx) => {
-      const search = salesSearch.toLowerCase();
+      const search = salesSearch.toLowerCase().trim();
       const matchSearch =
         !search ||
-        tx.tenant_name.toLowerCase().includes(search) ||
-        tx.user_name.toLowerCase().includes(search) ||
-        tx.user_email.toLowerCase().includes(search) ||
-        tx.id.toLowerCase().includes(search);
+        (tx.tenant_name || '').toLowerCase().includes(search) ||
+        (tx.user_name || '').toLowerCase().includes(search) ||
+        (tx.user_email || '').toLowerCase().includes(search) ||
+        (tx.id || '').toLowerCase().includes(search);
 
       const matchStatus = salesStatusFilter === 'all' || tx.status === salesStatusFilter;
+
+      return matchSearch && matchStatus;
 
       return matchSearch && matchStatus;
     });
@@ -564,10 +566,10 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
 
   // WhatsApp quick link builder
   const buildTrialWhatsAppUrl = (tenant: TenantItem) => {
-    const cleanPhone = (tenant.owner.phone || '').replace(/\D/g, '');
+    const cleanPhone = (tenant.owner?.phone || '').replace(/\D/g, '');
     const phoneWithCountry = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
     const text = encodeURIComponent(
-      `Olá ${tenant.owner.full_name}! Sou o responsável pelo Gestor de Streamings SaaS. Vi que você iniciou seu teste gratuito para a empresa "${tenant.name}". Está conseguindo usar ou precisa de ajuda com a configuração de clientes e planos?`
+      `Olá ${tenant.owner?.full_name || tenant.name}! Sou o responsável pelo Gestor de Streamings SaaS. Vi que você iniciou seu teste gratuito para a empresa "${tenant.name}". Está conseguindo usar ou precisa de ajuda com a configuração de clientes e planos?`
     );
     return `https://wa.me/${phoneWithCountry}?text=${text}`;
   };
@@ -576,7 +578,7 @@ export const SuperAdmin: React.FC<SuperAdminProps> = ({ isStandalone = false, on
     const cleanPhone = (tx.user_phone || '').replace(/\D/g, '');
     const phoneWithCountry = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
     const text = encodeURIComponent(
-      `Olá ${tx.user_name}! Vi que você iniciou a ativação da sua Licença Vitalícia de R$ ${tx.amount.toFixed(2)} do Gestor de Streamings SaaS. Precisa de alguma ajuda para concluir o Pix e liberar seu acesso definitivo?`
+      `Olá ${tx.user_name || 'Amigo'}! Vi que você iniciou a ativação da sua Licença Vitalícia de R$ ${(tx.amount || 0).toFixed(2)} do Gestor de Streamings SaaS. Precisa de alguma ajuda para concluir o Pix e liberar seu acesso definitivo?`
     );
     return `https://wa.me/${phoneWithCountry}?text=${text}`;
   };

@@ -204,6 +204,11 @@
       "id": "d55f543f-8859-4659-0842-217a67aecd2a",
       "name": "SaniTV",
       "created_at": "2026-10-14T17:35:16.973+00:00"
+    },
+    {
+      "id": "tenant_marcofilho",
+      "name": "Marco Filho Streaming",
+      "created_at": "2026-10-15T17:10:08.812Z"
     }
   ],
   "profiles": [
@@ -668,6 +673,17 @@
       "password_hash": "542f46fe507db00af5e9d76b5917d14afd6a5b2091c773345f896323eb495f09",
       "role": "owner",
       "created_at": "2026-10-14T17:35:16.973+00:00"
+    },
+    {
+      "id": "user_marcofilho",
+      "tenant_id": "tenant_marcofilho",
+      "email": "contatomarcofilho@gmail.com",
+      "full_name": "Marco Filho",
+      "company_name": "Marco Filho Streaming",
+      "phone": "85988159811",
+      "password_hash": "212f4258783cdbf94f8abfee15c4e2466acbb6a2f901103a1f3e3c7d0056e74b",
+      "role": "owner",
+      "created_at": "2026-10-15T17:10:08.812Z"
     }
   ],
   "licenses": [
@@ -732,7 +748,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129Z",
-      "trial_expires_at": "2126-09-21T15:39:55.701Z",
+      "trial_expires_at": "2126-09-21T15:49:37.751Z",
       "price": 199,
       "activated_at": "2026-10-12T14:54:31.129+00:00",
       "transaction_id": "tx_vitalicio_tenant_1791816871129"
@@ -919,7 +935,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129+00:00",
-      "trial_expires_at": "2126-09-21T15:39:55.701Z",
+      "trial_expires_at": "2126-09-21T15:49:37.751Z",
       "price": 199,
       "activated_at": "2026-10-12T14:54:31.129+00:00",
       "transaction_id": "tx_vitalicio_tenant_1791816871129"
@@ -1637,6 +1653,17 @@
       "trial_expires_at": "2126-09-21T15:39:55.701Z",
       "activated_at": "2026-10-14T12:02:04.661+00:00",
       "transaction_id": "tx_vitalicio_d13e6698-c174-d581-cb48-87d585e23c74",
+      "price": 199
+    },
+    {
+      "id": "lic_tenant_marcofilho",
+      "tenant_id": "tenant_marcofilho",
+      "type": "lifetime",
+      "status": "active",
+      "trial_started_at": "2026-10-15T17:10:08.812Z",
+      "trial_expires_at": "2126-09-21T17:10:08.815Z",
+      "activated_at": "2026-10-15T17:10:08.812Z",
+      "transaction_id": "tx_vitalicio_tenant_marcofilho",
       "price": 199
     }
   ],
@@ -2528,6 +2555,16 @@
       "mp_payment_id": "",
       "created_at": "2026-10-14T20:17:22.9+00:00",
       "paid_at": "2026-10-14T20:17:22.9+00:00"
+    },
+    {
+      "id": "tx_vitalicio_tenant_marcofilho",
+      "tenant_id": "tenant_marcofilho",
+      "amount": 199,
+      "status": "approved",
+      "payment_method": "Licença Vitalícia Definitiva",
+      "paid_at": "2026-10-15T17:10:08.812Z",
+      "created_at": "2026-10-15T17:10:08.812Z",
+      "notes": "Acesso vitalício garantido"
     }
   ],
   "applications": [
@@ -4299,6 +4336,43 @@
       "setup_notes": "",
       "status": "active",
       "created_at": "2026-10-15T10:24:52.648+00:00"
+    },
+    {
+      "id": "app_1792084208817_1",
+      "tenant_id": "tenant_marcofilho",
+      "name": "IBO Player",
+      "category": "player_iptv",
+      "description": "Player Smart TV",
+      "color": "#1E40AF",
+      "devices": [
+        "Smart TV Samsung",
+        "Smart TV LG",
+        "Roku",
+        "Fire TV Stick"
+      ],
+      "login_type": "mac_key",
+      "requires_own_license": true,
+      "download_url": "https://iboplayer.com",
+      "status": "active",
+      "created_at": "2026-10-15T17:10:08.812Z"
+    },
+    {
+      "id": "app_1792084208817_2",
+      "tenant_id": "tenant_marcofilho",
+      "name": "XCIPTV Player",
+      "category": "android_box",
+      "description": "Player Android TV",
+      "color": "#0284C7",
+      "devices": [
+        "TV Box",
+        "Android TV",
+        "Fire TV Stick"
+      ],
+      "login_type": "xtream",
+      "requires_own_license": false,
+      "download_url": "https://play.google.com/store/apps/details?id=com.nathNetwork.xciptv",
+      "status": "active",
+      "created_at": "2026-10-15T17:10:08.812Z"
     }
   ],
   "plans": [
@@ -5419,6 +5493,56 @@
       "duration_days": 30,
       "status": "active",
       "created_at": "2026-10-15T10:24:52.926+00:00"
+    },
+    {
+      "id": "plan_1792079323915",
+      "tenant_id": "tenant_1791816871129",
+      "name": "iptv a",
+      "description": "",
+      "app_id": "app_1791816871130_1",
+      "category": "streaming",
+      "price": 29.9,
+      "billing_cycle": "mensal",
+      "duration_days": 30,
+      "status": "active",
+      "created_at": "2026-10-15T15:48:43.915Z"
+    },
+    {
+      "id": "plan_1792079331327",
+      "tenant_id": "tenant_1791816871129",
+      "name": "iptv b",
+      "description": "",
+      "app_id": "app_1791816871130_1",
+      "category": "streaming",
+      "price": 29.9,
+      "billing_cycle": "mensal",
+      "duration_days": 30,
+      "status": "active",
+      "created_at": "2026-10-15T15:48:51.327Z"
+    },
+    {
+      "id": "plan_1792084208817_1",
+      "tenant_id": "tenant_marcofilho",
+      "name": "Plano Mensal - 1 Tela",
+      "description": "Acesso mensal 1 tela",
+      "category": "player_iptv",
+      "price": 25,
+      "billing_cycle": "mensal",
+      "duration_days": 30,
+      "status": "active",
+      "created_at": "2026-10-15T17:10:08.812Z"
+    },
+    {
+      "id": "plan_1792084208817_2",
+      "tenant_id": "tenant_marcofilho",
+      "name": "Plano Mensal VIP - 2 Telas",
+      "description": "Acesso mensal 2 telas",
+      "category": "android_box",
+      "price": 35,
+      "billing_cycle": "mensal",
+      "duration_days": 30,
+      "status": "active",
+      "created_at": "2026-10-15T17:10:08.812Z"
     }
   ],
   "customers": [
@@ -6411,6 +6535,50 @@
       "app_username": "",
       "app_password": "",
       "created_at": "2026-10-15T10:24:53.158+00:00"
+    },
+    {
+      "id": "cust_1792079377752",
+      "tenant_id": "tenant_1791816871129",
+      "created_at": "2026-10-15T15:49:37.752Z",
+      "full_name": "jin teste",
+      "phone": "85988159811",
+      "whatsapp": "85988159811",
+      "email": "",
+      "cpf": "",
+      "app_id": "9464ad4e-ca4a-88b1-7019-d272c0e5b7c4",
+      "plan_id": "plan_1792079323915",
+      "monthly_fee": 29.9,
+      "start_date": "2026-10-15",
+      "due_date": "2026-11-14",
+      "payment_method": "Pix",
+      "status": "active",
+      "notes": "",
+      "mac_address": "",
+      "device_key": "",
+      "app_username": "",
+      "app_password": ""
+    },
+    {
+      "id": "cust_1792084208817",
+      "tenant_id": "tenant_demo_001",
+      "full_name": "Marco Filho",
+      "phone": "85988159811",
+      "whatsapp": "5585988159811",
+      "email": "contatomarcofilho@gmail.com",
+      "cpf": "000.000.000-00",
+      "app_id": "app_1",
+      "plan_id": "plan_1",
+      "monthly_fee": 35,
+      "start_date": "2026-10-15",
+      "due_date": "2026-11-14",
+      "payment_method": "Pix",
+      "status": "active",
+      "notes": "Cadastrado no sistema",
+      "mac_address": "",
+      "device_key": "",
+      "app_username": "marcofilho",
+      "app_password": "123",
+      "created_at": "2026-10-15T17:10:08.812Z"
     }
   ],
   "charges": [
@@ -7160,6 +7328,20 @@
       "discount": 0,
       "notes": "Cobrança inicial gerada automaticamente no cadastro",
       "created_at": "2026-10-15T10:18:34.865Z"
+    },
+    {
+      "id": "chg_1792079377753",
+      "tenant_id": "tenant_1791816871129",
+      "customer_id": "cust_1792079377752",
+      "customer_name": "jin teste",
+      "app_name": "CAP PLAYER",
+      "plan_name": "iptv a",
+      "amount": 29.9,
+      "due_date": "2026-11-14",
+      "status": "pending",
+      "payment_method": "Pix",
+      "notes": "Cobrança inicial gerada automaticamente no cadastro",
+      "created_at": "2026-10-15T15:49:37.753Z"
     }
   ],
   "whatsapp_instances": [
@@ -7498,6 +7680,17 @@
       "provider": "evolution",
       "status": "disconnected",
       "error_message": null
+    },
+    {
+      "id": "inst_1792084208817",
+      "tenant_id": "tenant_marcofilho",
+      "name": "gestor_marcofilho",
+      "phone_number": "5585988159811",
+      "status": "disconnected",
+      "qr_code": null,
+      "provider": "evolution",
+      "api_url": "https://api.doratec.site",
+      "created_at": "2026-10-15T17:10:08.812Z"
     }
   ],
   "automation_settings": [

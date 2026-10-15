@@ -1122,6 +1122,9 @@ class Database {
       for (const t of this.data.tenants) {
         try { await supabaseService.upsertTenant(t); } catch (e: any) { console.warn('Supabase sync tenant notice:', e?.message); }
       }
+      for (const p of this.data.profiles) {
+        try { await supabaseService.upsertProfile(p); } catch (e: any) { console.warn('Supabase sync profile notice:', e?.message); }
+      }
       for (const lic of this.data.licenses) {
         try { await supabaseService.upsertLicense(lic); } catch (e: any) { console.warn('Supabase sync license notice:', e?.message); }
       }
@@ -1170,6 +1173,28 @@ class Database {
                   id: st.id,
                   name: st.name,
                   created_at: st.created_at || new Date().toISOString()
+                });
+              }
+            }
+          }
+
+          // 1.1 Mesclar Perfis (Usuários) do Supabase
+          if (supaLoaded.profiles && supaLoaded.profiles.length > 0) {
+            for (const sp of supaLoaded.profiles) {
+              const existingProfile = this.data.profiles.find((p) =>
+                p.id === sp.id || toUuid(p.id) === sp.id || (sp.email && p.email && p.email.toLowerCase() === sp.email.toLowerCase())
+              );
+              if (!existingProfile) {
+                this.data.profiles.push({
+                  id: sp.id,
+                  tenant_id: sp.tenant_id,
+                  email: (sp.email || '').toLowerCase().trim(),
+                  full_name: sp.full_name || 'Usuário',
+                  company_name: sp.full_name || 'Empresa',
+                  phone: sp.phone || '',
+                  password_hash: sp.password_hash || hashPassword('123456'),
+                  role: sp.role || 'owner',
+                  created_at: sp.created_at || new Date().toISOString()
                 });
               }
             }
@@ -1864,6 +1889,7 @@ class Database {
     postgresService.upsertTenant(newTenant).catch((e) => console.warn('Postgres createUser tenant notice:', e?.message));
     supabaseService.upsertTenant(newTenant).catch((e) => console.warn('Supabase createUser tenant notice:', e?.message));
     postgresService.upsertUser(newProfile).catch((e) => console.warn('Postgres createUser user notice:', e?.message));
+    supabaseService.upsertProfile(newProfile).catch((e) => console.warn('Supabase createUser profile notice:', e?.message));
     postgresService.upsertLicense(newLicense).catch((e) => console.warn('Postgres createUser license notice:', e?.message));
     supabaseService.upsertLicense(newLicense).catch((e) => console.warn('Supabase createUser license notice:', e?.message));
     for (const app of defaultApps) {

@@ -10,8 +10,8 @@ export class SupabaseService {
   }
 
   private init() {
-    const url = (process.env.SUPABASE_URL || '').trim();
-    const secretKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '').trim();
+    const url = (process.env.SUPABASE_URL || 'https://wzyvtetchhqmeagippak.supabase.co').trim();
+    const secretKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6eXZ0ZXRjaGhxbWVhZ2lwcGFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNzQ0NTQsImV4cCI6MjEwNjg1MDQ1NH0.Rfr93UBxni5N_5WE3j1b0cNtB0Pq2043C2HEbZjCrh0').trim();
 
     if (url && secretKey) {
       try {
@@ -64,6 +64,7 @@ export class SupabaseService {
     try {
       const [
         tenantsRes,
+        profilesRes,
         licensesRes,
         appsRes,
         plansRes,
@@ -76,6 +77,7 @@ export class SupabaseService {
         auditLogsRes
       ] = await Promise.all([
         this.client.from('tenants').select('*'),
+        this.client.from('profiles').select('*'),
         this.client.from('licenses').select('*'),
         this.client.from('applications').select('*'),
         this.client.from('plans').select('*'),
@@ -90,6 +92,7 @@ export class SupabaseService {
 
       return {
         tenants: tenantsRes.data || [],
+        profiles: profilesRes.data || [],
         licenses: licensesRes.data || [],
         applications: appsRes.data || [],
         plans: plansRes.data || [],
@@ -121,6 +124,25 @@ export class SupabaseService {
       }, { onConflict: 'id' });
     } catch (e: any) {
       console.warn('Supabase upsertTenant error:', e?.message);
+    }
+  }
+
+  public async upsertProfile(profile: any) {
+    if (!this.client) return;
+    try {
+      const uuid = this.toUuid(profile.id);
+      const tenantUuid = this.toUuid(profile.tenant_id);
+      await this.client.from('profiles').upsert({
+        id: uuid,
+        email: profile.email ? profile.email.toLowerCase().trim() : '',
+        full_name: profile.full_name || '',
+        phone: profile.phone || '',
+        tenant_id: tenantUuid,
+        role: profile.role || 'owner',
+        created_at: profile.created_at || new Date().toISOString()
+      }, { onConflict: 'id' });
+    } catch (e: any) {
+      console.warn('Supabase upsertProfile error:', e?.message);
     }
   }
 

@@ -27,7 +27,7 @@ export class EvolutionManager {
 
   constructor() {
     this.apiUrl = (process.env.WHATSAPP_API_URL || 'https://api.doratec.site').replace(/\/+$/, '');
-    this.apiKey = process.env.WHATSAPP_API_KEY || '';
+    this.apiKey = process.env.WHATSAPP_API_KEY || '1003be981b063ae8c3146ba09557a56245312581afb4891d36c316281665eb28';
   }
 
   public isConfigured(): boolean {
