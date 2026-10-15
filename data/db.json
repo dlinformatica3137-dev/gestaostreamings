@@ -677,7 +677,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T11:45:45.422Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T11:45:45.422+00:00",
       "transaction_id": "tx_vitalicio_tenant_demo_001"
@@ -688,7 +688,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T04:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T04:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_trial_01"
@@ -699,7 +699,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T07:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-11T07:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_expired_02"
@@ -710,7 +710,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T16:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-11T16:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_pending_03"
@@ -721,7 +721,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-10T12:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T00:40:42.894+00:00",
       "transaction_id": "tx_mp_sample_984321",
       "price": 199
@@ -732,7 +732,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T14:54:31.129+00:00",
       "transaction_id": "tx_vitalicio_tenant_1791816871129"
@@ -743,7 +743,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T06:32:24.618+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T06:32:46.534+00:00",
       "transaction_id": "mp_pay_368746332",
       "price": 199
@@ -754,7 +754,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T00:32:46.026+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T00:32:46.026+00:00",
       "transaction_id": "tx_vitalicio_d7f6a9dd-dff0-e265-c50a-5d6deaec8dfd"
@@ -765,7 +765,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T00:32:57.896+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T00:32:57.896+00:00",
       "transaction_id": "tx_vitalicio_f8e046d1-a0e7-1c77-a07d-dd87b7098aa6"
@@ -776,7 +776,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T17:36:14.526+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T17:36:14.526+00:00",
       "transaction_id": "tx_vitalicio_624236f6-1734-4ec6-02b5-68406cf513a3"
@@ -787,7 +787,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T17:36:59.537+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T17:36:59.537+00:00",
       "transaction_id": "tx_vitalicio_3fff4de5-6d27-159f-1843-34eea05fe7cb"
@@ -798,7 +798,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T17:55:53.589+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T17:55:53.589+00:00",
       "transaction_id": "tx_vitalicio_d8647144-c4ba-3f4c-c91f-21bd6661f525"
@@ -809,7 +809,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T22:33:18.677+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T17:36:14.526+00:00",
       "transaction_id": "tx_vitalicio_624236f6-1734-4ec6-02b5-68406cf513a3"
@@ -820,7 +820,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T22:50:00.691+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T22:50:00.691+00:00",
       "transaction_id": "tx_vitalicio_d065fa60-639e-8152-07fc-b256027b4814"
@@ -831,7 +831,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T19:39:59.548+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T19:39:59.548+00:00",
       "transaction_id": "tx_vitalicio_4784b3ab-2441-6a89-002d-5d207691ace0"
@@ -842,7 +842,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T06:47:19.217+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T06:48:49.241+00:00",
       "transaction_id": "mp_pay_187976840",
       "price": 199
@@ -853,7 +853,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T01:01:52.728+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T17:36:14.526+00:00",
       "transaction_id": "tx_vitalicio_624236f6-1734-4ec6-02b5-68406cf513a3"
@@ -864,7 +864,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T11:45:45.422+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T11:45:45.422+00:00",
       "transaction_id": "tx_vitalicio_tenant_demo_001"
@@ -875,7 +875,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T04:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T04:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_trial_01"
@@ -886,7 +886,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T07:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-11T07:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_expired_02"
@@ -897,7 +897,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T16:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-11T16:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_pending_03"
@@ -908,7 +908,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-10T12:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T00:40:42.894+00:00",
       "transaction_id": "tx_mp_sample_984321",
       "price": 199
@@ -919,7 +919,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T14:54:31.129+00:00",
       "transaction_id": "tx_vitalicio_tenant_1791816871129"
@@ -930,7 +930,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T13:46:58.449+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T13:46:58.449+00:00",
       "transaction_id": "tx_vitalicio_c543f91a-af17-58f6-9418-cf591e1dd0e5"
@@ -941,7 +941,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T00:31:08.742+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-14T00:31:08.742+00:00",
       "transaction_id": "tx_vitalicio_055b30e8-0af4-9e34-d938-50f181d3f76d"
@@ -952,7 +952,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T19:54:07.878+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T21:34:01.927+00:00",
       "transaction_id": "18447a11-0882-8fed-79d8-efdfd0cad55a"
@@ -963,7 +963,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T17:32:42.565+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T17:32:42.565+00:00",
       "transaction_id": "tx_vitalicio_69b5fdcf-cb50-00a5-f3f3-fb7de7f7da6e"
@@ -974,7 +974,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T20:18:09.068+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T20:18:09.068+00:00",
       "transaction_id": "tx_vitalicio_d8e91cdb-e3b6-1e7f-dd4a-7e1ed5c20977"
@@ -985,7 +985,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T00:50:01.065+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-14T00:50:01.065+00:00",
       "transaction_id": "tx_vitalicio_911e15b6-4383-780a-95dc-fae9635ccd7a"
@@ -996,7 +996,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T18:43:03.937+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T18:43:03.937+00:00",
       "transaction_id": "tx_vitalicio_c21b8198-21d7-f6bd-2381-a23b6eb886d5"
@@ -1007,7 +1007,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T18:43:10.74+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-12T17:36:59.537+00:00",
       "transaction_id": "tx_vitalicio_3fff4de5-6d27-159f-1843-34eea05fe7cb"
@@ -1018,7 +1018,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T22:56:56.349+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T22:56:56.349+00:00",
       "transaction_id": "tx_vitalicio_f948fd82-1b64-8af4-d2b0-78bb898ea4ab"
@@ -1029,7 +1029,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T19:51:15.015+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T19:51:15.015+00:00",
       "transaction_id": "tx_vitalicio_34bd672f-4353-4ab7-d8f3-98e87cc176d7"
@@ -1040,7 +1040,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T23:20:21.539+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-13T23:20:21.539+00:00",
       "transaction_id": "tx_vitalicio_cd81c341-c467-053f-35ac-4186e2d3fab2"
@@ -1051,7 +1051,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T11:45:45.422Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T11:45:45.422+00:00",
       "transaction_id": "tx_vitalicio_tenant_demo_001",
       "price": 199
@@ -1062,7 +1062,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T04:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T04:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_trial_01",
       "price": 199
@@ -1073,7 +1073,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T07:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T07:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_expired_02",
       "price": 199
@@ -1084,7 +1084,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T16:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T16:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_pending_03",
       "price": 199
@@ -1095,7 +1095,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-10T12:40:42.894Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T00:40:42.894+00:00",
       "transaction_id": "tx_mp_sample_984321",
       "price": 199
@@ -1106,7 +1106,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T14:54:31.129+00:00",
       "transaction_id": "tx_vitalicio_tenant_1791816871129",
       "price": 199
@@ -1117,7 +1117,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T06:32:24.618+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T06:32:46.534+00:00",
       "transaction_id": "mp_pay_368746332",
       "price": 199
@@ -1128,7 +1128,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T00:32:46.026+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T00:32:46.026+00:00",
       "transaction_id": "tx_vitalicio_d7f6a9dd-dff0-e265-c50a-5d6deaec8dfd",
       "price": 199
@@ -1139,7 +1139,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T00:32:57.896+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T00:32:57.896+00:00",
       "transaction_id": "tx_vitalicio_f8e046d1-a0e7-1c77-a07d-dd87b7098aa6",
       "price": 199
@@ -1150,7 +1150,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T17:36:14.526+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T17:36:14.526+00:00",
       "transaction_id": "tx_vitalicio_624236f6-1734-4ec6-02b5-68406cf513a3",
       "price": 199
@@ -1161,7 +1161,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T17:36:59.537+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T17:36:59.537+00:00",
       "transaction_id": "tx_vitalicio_3fff4de5-6d27-159f-1843-34eea05fe7cb",
       "price": 199
@@ -1172,7 +1172,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T17:55:53.589+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T17:55:53.589+00:00",
       "transaction_id": "tx_vitalicio_d8647144-c4ba-3f4c-c91f-21bd6661f525",
       "price": 199
@@ -1183,7 +1183,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T22:33:18.677+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T17:36:14.526+00:00",
       "transaction_id": "tx_vitalicio_624236f6-1734-4ec6-02b5-68406cf513a3",
       "price": 199
@@ -1194,7 +1194,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T22:50:00.691+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T22:50:00.691+00:00",
       "transaction_id": "tx_vitalicio_d065fa60-639e-8152-07fc-b256027b4814",
       "price": 199
@@ -1205,7 +1205,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T19:39:59.548+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T19:39:59.548+00:00",
       "transaction_id": "tx_vitalicio_4784b3ab-2441-6a89-002d-5d207691ace0",
       "price": 199
@@ -1216,7 +1216,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T06:47:19.217+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T06:48:49.241+00:00",
       "transaction_id": "mp_pay_187976840",
       "price": 199
@@ -1227,7 +1227,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T01:01:52.728+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T17:36:14.526+00:00",
       "transaction_id": "tx_vitalicio_624236f6-1734-4ec6-02b5-68406cf513a3",
       "price": 199
@@ -1238,7 +1238,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T11:45:45.422+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T11:45:45.422+00:00",
       "transaction_id": "tx_vitalicio_tenant_demo_001",
       "price": 199
@@ -1249,7 +1249,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T04:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T04:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_trial_01",
       "price": 199
@@ -1260,7 +1260,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T07:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T07:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_expired_02",
       "price": 199
@@ -1271,7 +1271,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-11T16:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T16:40:42.894+00:00",
       "transaction_id": "tx_vitalicio_tenant_sample_pending_03",
       "price": 199
@@ -1282,7 +1282,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-10T12:40:42.894+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-11T00:40:42.894+00:00",
       "transaction_id": "tx_mp_sample_984321",
       "price": 199
@@ -1293,7 +1293,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T14:54:31.129+00:00",
       "transaction_id": "tx_vitalicio_tenant_1791816871129",
       "price": 199
@@ -1304,7 +1304,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T13:46:58.449+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T13:46:58.449+00:00",
       "transaction_id": "tx_vitalicio_c543f91a-af17-58f6-9418-cf591e1dd0e5",
       "price": 199
@@ -1315,7 +1315,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T00:31:08.742+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T00:31:08.742+00:00",
       "transaction_id": "tx_vitalicio_055b30e8-0af4-9e34-d938-50f181d3f76d",
       "price": 199
@@ -1326,7 +1326,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T19:54:07.878+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T21:34:01.927+00:00",
       "transaction_id": "18447a11-0882-8fed-79d8-efdfd0cad55a",
       "price": 199
@@ -1337,7 +1337,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T17:32:42.565+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T17:32:42.565+00:00",
       "transaction_id": "tx_vitalicio_69b5fdcf-cb50-00a5-f3f3-fb7de7f7da6e",
       "price": 199
@@ -1348,7 +1348,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T20:18:09.068+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T20:18:09.068+00:00",
       "transaction_id": "tx_vitalicio_d8e91cdb-e3b6-1e7f-dd4a-7e1ed5c20977",
       "price": 199
@@ -1359,7 +1359,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T00:50:01.065+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T00:50:01.065+00:00",
       "transaction_id": "tx_vitalicio_911e15b6-4383-780a-95dc-fae9635ccd7a",
       "price": 199
@@ -1370,7 +1370,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T18:43:03.937+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T18:43:03.937+00:00",
       "transaction_id": "tx_vitalicio_c21b8198-21d7-f6bd-2381-a23b6eb886d5",
       "price": 199
@@ -1381,7 +1381,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T18:43:10.74+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-12T17:36:59.537+00:00",
       "transaction_id": "tx_vitalicio_3fff4de5-6d27-159f-1843-34eea05fe7cb",
       "price": 199
@@ -1392,7 +1392,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T22:56:56.349+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T22:56:56.349+00:00",
       "transaction_id": "tx_vitalicio_f948fd82-1b64-8af4-d2b0-78bb898ea4ab",
       "price": 199
@@ -1403,7 +1403,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T19:51:15.015+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T19:51:15.015+00:00",
       "transaction_id": "tx_vitalicio_34bd672f-4353-4ab7-d8f3-98e87cc176d7",
       "price": 199
@@ -1414,7 +1414,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-13T23:20:21.539+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-13T23:20:21.539+00:00",
       "transaction_id": "tx_vitalicio_cd81c341-c467-053f-35ac-4186e2d3fab2",
       "price": 199
@@ -1425,7 +1425,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T11:40:47.195Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-14T11:40:47.198Z",
       "transaction_id": "super_admin_1791978047198"
@@ -1436,7 +1436,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T11:40:47.198Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T11:40:47.198Z",
       "transaction_id": "super_admin_1791978047198",
       "price": 199
@@ -1447,7 +1447,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T11:40:47.195Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T11:40:47.198Z",
       "transaction_id": "super_admin_1791978047198",
       "price": 199
@@ -1458,7 +1458,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T11:40:47.198Z",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T11:40:47.198Z",
       "transaction_id": "super_admin_1791978047198",
       "price": 199
@@ -1469,7 +1469,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T20:40:31.648+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-14T20:40:31.648+00:00",
       "transaction_id": "tx_vitalicio_5919f594-bd8b-ff68-3120-68475a066f21"
@@ -1480,7 +1480,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T16:29:45.859+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T16:29:45.859+00:00",
       "transaction_id": "tx_vitalicio_57e436a9-052e-9a3f-c85c-bff515bfe9ff",
       "price": 199
@@ -1491,7 +1491,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T17:35:16.973+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T17:35:16.973+00:00",
       "transaction_id": "tx_vitalicio_d55f543f-8859-4659-0842-217a67aecd2a",
       "price": 199
@@ -1502,7 +1502,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T19:57:17.644+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-14T19:57:17.644+00:00",
       "transaction_id": "tx_vitalicio_1eeeaf7f-4bc3-dea6-780a-62e1715b656b"
@@ -1513,7 +1513,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T20:17:22.9+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "price": 199,
       "activated_at": "2026-10-14T20:17:22.9+00:00",
       "transaction_id": "tx_vitalicio_3fbbc34c-103b-3ee2-2277-f378de5ba27a"
@@ -1524,7 +1524,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T16:53:28.481+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T16:53:28.481+00:00",
       "transaction_id": "tx_vitalicio_3dff563e-5eb8-6899-2e8a-7725c3632cb4",
       "price": 199
@@ -1535,7 +1535,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T12:02:04.661+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T12:02:04.661+00:00",
       "transaction_id": "tx_vitalicio_d13e6698-c174-d581-cb48-87d585e23c74",
       "price": 199
@@ -1546,7 +1546,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T16:29:45.859+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T16:29:45.859+00:00",
       "transaction_id": "tx_vitalicio_57e436a9-052e-9a3f-c85c-bff515bfe9ff",
       "price": 199
@@ -1557,7 +1557,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T17:35:16.973+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T17:35:16.973+00:00",
       "transaction_id": "tx_vitalicio_d55f543f-8859-4659-0842-217a67aecd2a",
       "price": 199
@@ -1568,7 +1568,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T16:53:28.481+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T16:53:28.481+00:00",
       "transaction_id": "tx_vitalicio_3dff563e-5eb8-6899-2e8a-7725c3632cb4",
       "price": 199
@@ -1579,7 +1579,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T12:02:04.661+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T12:02:04.661+00:00",
       "transaction_id": "tx_vitalicio_d13e6698-c174-d581-cb48-87d585e23c74",
       "price": 199
@@ -1590,7 +1590,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T20:40:31.648+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T20:40:31.648+00:00",
       "transaction_id": "tx_vitalicio_5919f594-bd8b-ff68-3120-68475a066f21",
       "price": 199
@@ -1601,7 +1601,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T19:57:17.644+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T19:57:17.644+00:00",
       "transaction_id": "tx_vitalicio_1eeeaf7f-4bc3-dea6-780a-62e1715b656b",
       "price": 199
@@ -1612,7 +1612,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T20:17:22.9+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T20:17:22.9+00:00",
       "transaction_id": "tx_vitalicio_3fbbc34c-103b-3ee2-2277-f378de5ba27a",
       "price": 199
@@ -1623,7 +1623,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T12:02:04.661+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T12:02:04.661+00:00",
       "transaction_id": "tx_vitalicio_d13e6698-c174-d581-cb48-87d585e23c74",
       "price": 199
@@ -1634,7 +1634,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-14T12:02:04.661+00:00",
-      "trial_expires_at": "2126-09-21T13:32:42.632Z",
+      "trial_expires_at": "2126-09-21T14:43:32.170Z",
       "activated_at": "2026-10-14T12:02:04.661+00:00",
       "transaction_id": "tx_vitalicio_d13e6698-c174-d581-cb48-87d585e23c74",
       "price": 199
@@ -8346,6 +8346,17 @@
       "message_content": "Olá! * Juliana Barbosa Lima!*\nO vencimento do  seu pacote \n*Netflix 1 Tela 4K Mensal* .  Venceu ontem. Vai renovar?\n\n📆 Vencimento:  *(12/10/2026)*\n💰 Valor:  *R$ 22,00*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n",
       "status": "sent",
       "sent_at": "2026-10-14T12:00:07.492Z"
+    },
+    {
+      "id": "log_1792073144296_0",
+      "tenant_id": "tenant_1791816871129",
+      "customer_id": "cust_1791899670254",
+      "customer_name": "rael james",
+      "phone": "85996079396",
+      "event_type": "after_due_date",
+      "message_content": "Olá! * rael james!*\nO vencimento do  seu pacote \n*Plano Mensal VIP - 2 Telas* .  Venceu ontem. Vai renovar?\n\n📆 Vencimento:  *(13/10/2026)*\n💰 Valor:  *R$ 35,00*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n",
+      "status": "sent",
+      "sent_at": "2026-10-15T14:05:44.296Z"
     }
   ],
   "audit_logs": [

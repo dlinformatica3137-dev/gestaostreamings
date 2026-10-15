@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -33,6 +34,7 @@ async function startServer() {
   });
 
   // Request logger & health check
+  app.use(compression());
   app.use((req, res, next) => {
     console.log(`[HTTP] ${req.method} ${req.url}`);
     next();

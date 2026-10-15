@@ -8,5 +8,5 @@ coverage/
 !.env.example
 .agents/
 test_*.ts
-test_*.js
+server.bundle.js
 
