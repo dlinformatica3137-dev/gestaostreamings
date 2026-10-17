@@ -13,6 +13,17 @@ export class SupabaseService {
     const url = (process.env.SUPABASE_URL || 'https://wzyvtetchhqmeagippak.supabase.co').trim();
     const secretKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6eXZ0ZXRjaGhxbWVhZ2lwcGFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNzQ0NTQsImV4cCI6MjEwNjg1MDQ1NH0.Rfr93UBxni5N_5WE3j1b0cNtB0Pq2043C2HEbZjCrh0').trim();
 
+    // Polyfill seguro para Node 20 ou ambientes de hospedagem sem WebSocket nativo
+    if (typeof globalThis.WebSocket === 'undefined') {
+      (globalThis as any).WebSocket = class WebSocket {
+        constructor() {}
+        addEventListener() {}
+        removeEventListener() {}
+        send() {}
+        close() {}
+      };
+    }
+
     if (url && secretKey) {
       try {
         this.client = createClient(url, secretKey, {
