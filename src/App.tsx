@@ -5,6 +5,7 @@ import { Header } from './components/layout/Header.tsx';
 import { Sidebar } from './components/layout/Sidebar.tsx';
 import { TrialBanner } from './components/common/TrialBanner.tsx';
 import { CheckoutModal } from './components/common/CheckoutModal.tsx';
+import { FloatingWhatsAppSupport } from './components/common/FloatingWhatsAppSupport.tsx';
 import { Auth } from './pages/Auth.tsx';
 import { Dashboard } from './pages/Dashboard.tsx';
 import { Customers } from './pages/Customers.tsx';
@@ -78,7 +79,12 @@ const AppContent: React.FC = () => {
   }
 
   if (!user) {
-    return <Auth onAdminClick={() => setIsAdminDirectRoute(true)} />;
+    return (
+      <>
+        <Auth onAdminClick={() => setIsAdminDirectRoute(true)} />
+        <FloatingWhatsAppSupport />
+      </>
+    );
   }
 
   const handleNavigate = (tab: string, filter?: any) => {
@@ -148,6 +154,9 @@ const AppContent: React.FC = () => {
 
       {/* Mercado Pago Checkout & Lifetime License Modal */}
       <CheckoutModal />
+
+      {/* Botão de Suporte WhatsApp Flutuante */}
+      <FloatingWhatsAppSupport />
     </div>
   );
 };
