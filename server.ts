@@ -105,7 +105,16 @@ async function startServer() {
   });
 }
 
+process.on('uncaughtException', (err: any) => {
+  console.warn('⚠️ [Server] Uncaught Exception interceptada:', err?.message || err);
+});
+
+process.on('unhandledRejection', (reason: any) => {
+  console.warn('⚠️ [Server] Unhandled Rejection interceptada:', reason?.message || reason);
+});
+
 startServer().catch((err) => {
   console.error('Falha ao iniciar servidor:', err);
   process.exit(1);
 });
+

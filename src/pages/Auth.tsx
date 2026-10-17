@@ -175,15 +175,16 @@ export const Auth: React.FC<AuthProps> = () => {
         {/* Presentation & Hero Column (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
           <div className="flex items-center gap-3.5">
-            <div className="w-14 h-14 rounded-2xl bg-slate-800/90 border border-slate-700/80 flex items-center justify-center p-1 shadow-xl shrink-0 overflow-hidden">
-              <img src="/logo.png" alt="Logo Gestor de Streamings" className="w-full h-full object-contain" />
+            <div className="w-16 h-16 rounded-2xl bg-slate-800/90 border border-slate-700/80 flex items-center justify-center p-1.5 shadow-xl shrink-0 overflow-hidden">
+              <img src="/logo.png" alt="Logo Gestor de Streamings" className="w-full h-full object-contain drop-shadow" />
             </div>
             <div>
-              <span className="text-xl font-bold tracking-tight text-white block">
+              <span className="text-2xl font-black tracking-tight text-white block">
                 Gestor de Streamings
               </span>
-              <span className="text-xs text-blue-400 font-medium tracking-wide">
-                SaaS para IPTV & Streaming
+              <span className="text-xs text-blue-400 font-bold tracking-wide flex items-center gap-1.5 mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                Streaming & IPTV
               </span>
             </div>
           </div>
@@ -233,12 +234,12 @@ export const Auth: React.FC<AuthProps> = () => {
         <div className="lg:col-span-7 bg-slate-800/80 backdrop-blur-md p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-slate-700/80 shadow-2xl space-y-4 sm:space-y-6">
           {/* Mobile brand header */}
           <div className="flex items-center gap-3 lg:hidden pb-3 border-b border-slate-700/60">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700/60 p-1 flex items-center justify-center shrink-0">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+            <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700/70 p-1 flex items-center justify-center shrink-0 shadow-md">
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain drop-shadow" />
             </div>
             <div>
-              <span className="font-bold text-white text-base block leading-tight">Gestor de Streamings</span>
-              <span className="text-[11px] text-blue-400 font-medium">SaaS IPTV & Assinaturas</span>
+              <span className="font-extrabold text-white text-base block leading-tight">Gestor de Streamings</span>
+              <span className="text-xs text-blue-400 font-bold">Streaming & IPTV</span>
             </div>
           </div>
 

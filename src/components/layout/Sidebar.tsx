@@ -72,25 +72,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       <aside
         className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-200 lg:static ${
-          isCollapsed ? 'w-20' : 'w-64'
+          isCollapsed ? 'w-20' : 'w-72'
         } ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-slate-200 dark:border-slate-800 shrink-0">
-          <div className="flex items-center gap-3 overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700/60 flex items-center justify-center shrink-0 shadow-xs overflow-hidden p-0.5">
+        <div
+          className={`relative flex items-center ${
+            isCollapsed ? 'justify-center px-2' : 'justify-between px-4'
+          } h-20 border-b border-slate-200 dark:border-slate-800 shrink-0 transition-all`}
+        >
+          <div
+            className={`flex items-center gap-3.5 overflow-hidden ${
+              isCollapsed ? 'cursor-pointer justify-center' : ''
+            }`}
+            onClick={isCollapsed ? onToggleCollapse : undefined}
+            title={isCollapsed ? 'Clique para expandir o menu' : undefined}
+          >
+            <div className="w-[58px] h-[58px] rounded-2xl bg-slate-900/95 dark:bg-slate-800/95 border border-slate-700/80 flex items-center justify-center shrink-0 shadow-md p-1 hover:scale-105 transition-transform">
               <img
                 src="/logo.png"
                 alt="Logo Gestor de Streamings"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain drop-shadow"
               />
             </div>
             {!isCollapsed && (
-              <div className="flex flex-col truncate">
-                <span className="font-bold text-slate-900 dark:text-white text-base tracking-tight truncate leading-tight">
+              <div className="flex flex-col truncate min-w-0">
+                <span className="font-extrabold text-slate-900 dark:text-white text-base tracking-tight truncate leading-tight">
                   Gestor de Streamings
                 </span>
-                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium tracking-wide">
+                <span className="text-xs text-blue-600 dark:text-blue-400 font-bold tracking-wide flex items-center gap-1.5 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shrink-0"></span>
                   Streaming & IPTV
                 </span>
               </div>
@@ -100,9 +111,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             onClick={onToggleCollapse}
             aria-label={isCollapsed ? 'Expandir menu lateral' : 'Recolher menu lateral'}
-            className="hidden lg:flex p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            className={`hidden lg:flex p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer ${
+              isCollapsed
+                ? 'absolute -right-3 top-7 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md rounded-full p-1 z-20'
+                : 'ml-1 shrink-0'
+            }`}
           >
-            {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+            {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
         </div>
 

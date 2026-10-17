@@ -39,6 +39,11 @@
       "id": "tenant_1791979324661",
       "name": "RAEL PRODUTO",
       "created_at": "2026-10-14T12:02:04.661Z"
+    },
+    {
+      "id": "tenant_1792101332060",
+      "name": "Usuario Teste Antigravity",
+      "created_at": "2026-10-15T21:55:32.060Z"
     }
   ],
   "profiles": [
@@ -129,6 +134,17 @@
       "password_hash": "0ef751bb84da8bc241fdccc9aacf8d33be3430938ed538277520391467890588",
       "role": "owner",
       "created_at": "2026-10-15T17:10:08.812Z"
+    },
+    {
+      "id": "user_1792101332060",
+      "tenant_id": "tenant_1792101332060",
+      "email": "testuser37666@gmail.com",
+      "full_name": "Usuario Teste Antigravity",
+      "company_name": "Usuario Teste Antigravity",
+      "phone": "11988887777",
+      "password_hash": "27bd5b5e7491b810657268de55017315f0395d088e6ada6578a43c071e751b2b",
+      "role": "owner",
+      "created_at": "2026-10-15T21:55:32.060Z"
     }
   ],
   "licenses": [
@@ -171,10 +187,10 @@
     {
       "id": "lic_tenant_1791816871129",
       "tenant_id": "tenant_1791816871129",
-      "type": "trial",
-      "status": "expired",
+      "type": "lifetime",
+      "status": "active",
       "trial_started_at": "2026-10-12T14:54:31.129Z",
-      "trial_expires_at": "2026-10-14T20:35:32.838Z",
+      "trial_expires_at": "2126-09-23T11:30:36.858Z",
       "price": 199,
       "activated_at": "2026-10-15T18:41:48.702Z"
     },
@@ -193,7 +209,7 @@
       "type": "lifetime",
       "status": "active",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2126-09-21T21:42:28.532Z",
+      "trial_expires_at": "2126-09-21T21:49:47.345Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "transaction_id": "tx_vitalicio_tenant_marcofilho",
       "price": 199
@@ -213,7 +229,7 @@
       "type": "trial",
       "status": "expired",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2026-10-14T21:49:02.751Z",
+      "trial_expires_at": "2026-10-14T21:55:07.318Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
@@ -223,18 +239,27 @@
       "type": "trial",
       "status": "expired",
       "trial_started_at": "2026-10-15T17:10:08.812Z",
-      "trial_expires_at": "2026-10-14T21:49:02.751Z",
+      "trial_expires_at": "2026-10-14T21:55:07.318Z",
       "activated_at": "2026-10-15T17:27:16.302Z",
       "price": 199
     },
     {
       "id": "lic_3ef67fdf-43bc-3422-d240-4c90ebfbda11",
       "tenant_id": "3ef67fdf-43bc-3422-d240-4c90ebfbda11",
-      "type": "trial",
-      "status": "expired",
+      "type": "lifetime",
+      "status": "active",
       "trial_started_at": "2026-10-15T18:41:48.702Z",
-      "trial_expires_at": "2026-10-14T20:35:32.838Z",
+      "trial_expires_at": "2126-09-23T11:30:36.858Z",
       "activated_at": "2026-10-15T18:41:48.702Z",
+      "price": 199
+    },
+    {
+      "id": "lic_1792101332061",
+      "tenant_id": "tenant_1792101332060",
+      "type": "trial",
+      "status": "active",
+      "trial_started_at": "2026-10-15T21:55:32.060Z",
+      "trial_expires_at": "2026-10-18T21:55:32.060Z",
       "price": 199
     }
   ],
@@ -888,6 +913,43 @@
       "setup_notes": "",
       "status": "active",
       "created_at": "2026-10-14T14:26:09.022+00:00"
+    },
+    {
+      "id": "app_1792101332061_1",
+      "tenant_id": "tenant_1792101332060",
+      "name": "IBO Player",
+      "category": "player_iptv",
+      "description": "Player de alta performance para Smart TV com ativação por MAC e Device Key",
+      "color": "#1E40AF",
+      "devices": [
+        "Smart TV Samsung",
+        "Smart TV LG",
+        "Roku",
+        "Fire TV Stick"
+      ],
+      "login_type": "mac_key",
+      "requires_own_license": true,
+      "download_url": "https://iboplayer.com",
+      "status": "active",
+      "created_at": "2026-10-15T21:55:32.060Z"
+    },
+    {
+      "id": "app_1792101332061_2",
+      "tenant_id": "tenant_1792101332060",
+      "name": "XCIPTV Player",
+      "category": "android_box",
+      "description": "Player moderno para Android TV, TV Box e Fire TV com login Xtream Codes API",
+      "color": "#0284C7",
+      "devices": [
+        "TV Box",
+        "Android TV",
+        "Fire TV Stick"
+      ],
+      "login_type": "xtream",
+      "requires_own_license": false,
+      "download_url": "https://play.google.com/store/apps/details?id=com.nathNetwork.xciptv",
+      "status": "active",
+      "created_at": "2026-10-15T21:55:32.060Z"
     }
   ],
   "plans": [
@@ -1174,6 +1236,32 @@
       "duration_days": 30,
       "status": "active",
       "created_at": "2026-10-14T14:17:38.398+00:00"
+    },
+    {
+      "id": "plan_1792101332061_1",
+      "tenant_id": "tenant_1792101332060",
+      "name": "Plano Mensal - 1 Tela (Full HD / 4K)",
+      "description": "Acesso mensal para 1 tela simultânea",
+      "app_id": "app_1792101332061_1",
+      "category": "player_iptv",
+      "price": 25,
+      "billing_cycle": "mensal",
+      "duration_days": 30,
+      "status": "active",
+      "created_at": "2026-10-15T21:55:32.060Z"
+    },
+    {
+      "id": "plan_1792101332061_2",
+      "tenant_id": "tenant_1792101332060",
+      "name": "Plano Mensal VIP - 2 Telas",
+      "description": "Lista completa de canais e filmes sem travas",
+      "app_id": "app_1792101332061_2",
+      "category": "android_box",
+      "price": 35,
+      "billing_cycle": "mensal",
+      "duration_days": 30,
+      "status": "active",
+      "created_at": "2026-10-15T21:55:32.060Z"
     }
   ],
   "customers": [
@@ -1189,7 +1277,7 @@
       "plan_id": "bfd697aa-39fa-f3b1-6883-a9187a66a7e0",
       "monthly_fee": 35,
       "start_date": "2026-10-13",
-      "due_date": "2026-10-13",
+      "due_date": "2026-11-16",
       "payment_method": "Pix",
       "status": "active",
       "notes": "",
@@ -2413,6 +2501,37 @@
       "discount": 0,
       "notes": "Cobrança inicial gerada automaticamente no cadastro",
       "created_at": "2026-10-13T23:16:16.795+00:00"
+    },
+    {
+      "id": "chg_1792236636861",
+      "tenant_id": "tenant_1791816871129",
+      "customer_id": "cust_1791899670254",
+      "customer_name": "rael james",
+      "app_name": "XCIPTV Player",
+      "plan_name": "Plano Mensal VIP - 2 Telas",
+      "amount": 35,
+      "due_date": "2026-10-13",
+      "paid_at": "2026-10-17T11:30:36.861Z",
+      "status": "paid",
+      "payment_method": "Pix",
+      "discount": 0,
+      "notes": "Renovação de assinatura (+30 dias)",
+      "registered_by": "Administrador",
+      "created_at": "2026-10-17T11:30:36.861Z"
+    },
+    {
+      "id": "chg_1792236636862",
+      "tenant_id": "tenant_1791816871129",
+      "customer_id": "cust_1791899670254",
+      "customer_name": "rael james",
+      "app_name": "XCIPTV Player",
+      "plan_name": "Plano Mensal VIP - 2 Telas",
+      "amount": 35,
+      "due_date": "2026-11-16",
+      "status": "pending",
+      "payment_method": "Pix",
+      "notes": "Próxima mensalidade gerada na renovação",
+      "created_at": "2026-10-17T11:30:36.861Z"
     }
   ],
   "whatsapp_instances": [
@@ -2490,6 +2609,14 @@
     {
       "id": "inst_1791975650491",
       "tenant_id": "tenant_marcofilho",
+      "name": "Instância WhatsApp Principal",
+      "provider": "evolution",
+      "status": "disconnected",
+      "error_message": null
+    },
+    {
+      "id": "inst_1792101352811",
+      "tenant_id": "tenant_1792101332060",
       "name": "Instância WhatsApp Principal",
       "provider": "evolution",
       "status": "disconnected",
@@ -2594,7 +2721,7 @@
       "send_one_day_before": true,
       "send_on_due_date": true,
       "send_after_due_date": true,
-      "scheduled_time": "14:30",
+      "scheduled_time": "09:00",
       "timezone": "America/Sao_Paulo",
       "message_interval_seconds": 15,
       "rate_limit_per_hour": 120,
@@ -2605,6 +2732,21 @@
     {
       "id": "auto_1792085284699",
       "tenant_id": "tenant_1791979324661",
+      "is_active": true,
+      "send_one_day_before": true,
+      "send_on_due_date": true,
+      "send_after_due_date": true,
+      "scheduled_time": "09:00",
+      "timezone": "America/Sao_Paulo",
+      "message_interval_seconds": 15,
+      "rate_limit_per_hour": 120,
+      "template_one_day_before": "Olá! * {nome_cliente}!*\nPassando só pra lembrar que seu pacote \n*{nome_plano}*  Vence Amanhã.\n\n📆 Vencimento:  *({data_vencimento})*\n💰 Valor:  *{valor}*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n",
+      "template_due_date": "Olá! * {nome_cliente}!*\nHoje é se vencimento do  seu pacote \n*{nome_plano}* .\n\n📆 Vencimento:  *({data_vencimento})*\n💰 Valor:  *{valor}*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n",
+      "template_after_due_date": "Olá! * {nome_cliente}!*\nO vencimento do  seu pacote \n*{nome_plano}* .  Venceu ontem. Vai renovar?\n\n📆 Vencimento:  *({data_vencimento})*\n💰 Valor:  *{valor}*\n\nDados para pagamanto:\n\n🔐 Chave Pix Cel\n📲  85996079396\n🏦 BANCO  NU PAGAMENTOS\n🙅🏼‍♂️ Edvan Dyemison\n\nApós efetuar o pagamanto, envie o comprovante para da baixa.\n\nATT: JonJon Telas Premium\n"
+    },
+    {
+      "id": "auto_1792101332061",
+      "tenant_id": "tenant_1792101332060",
       "is_active": true,
       "send_one_day_before": true,
       "send_on_due_date": true,
@@ -2726,6 +2868,13 @@
       "action": "LIFETIME_LICENSE_ACTIVATED",
       "description": "Licença vitalícia ativada com sucesso. Transação: super_admin_1792089708695",
       "created_at": "2026-10-15T18:41:48.702Z"
+    },
+    {
+      "id": "audit_1792101332061",
+      "tenant_id": "tenant_1792101332060",
+      "action": "TENANT_REGISTERED",
+      "description": "Conta criada para testuser37666@gmail.com",
+      "created_at": "2026-10-15T21:55:32.060Z"
     }
   ],
   "used_device_fingerprints": [
